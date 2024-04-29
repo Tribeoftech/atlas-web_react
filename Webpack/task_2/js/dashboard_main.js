@@ -3,7 +3,7 @@ import $ from 'jquery';
 // import lodash
 import _ from 'lodash';
 // styles
-import '../css/main.css';
+import 'task_2/css/main.css';
 
 // append elements
 $('body').append(`<div id="logo"></div>`);
