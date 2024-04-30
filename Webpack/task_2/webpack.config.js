@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-	entry: './task_2/js/dashboard_main.js',
+	entry: './js/dashboard_main.js',
 	output: {
 		path: path.resolve(__dirname, 'public'),
 		filename: 'bundle.js'
