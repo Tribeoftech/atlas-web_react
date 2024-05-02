@@ -1,4 +1,4 @@
-React intro
+React intro with webpack
  Novice
  By: Johann Kerbrat, Engineering Manager at Uber Works
  Weight: 1
