@@ -1,1 +1,1 @@
-React concepts including JSX, components, props, state, webpack and lifecycle methods.
+React concepts including JSX, components, props, state, webpack and lifecycle methods..
