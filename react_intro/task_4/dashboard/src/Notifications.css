@@ -1,0 +1,16 @@
+.Notifications {
+    border: 3px dashed #e14852;;
+    padding: 1em;
+}
+
+.Notifications button img {
+    width: 20px;
+}
+
+[data-priority='default'] {
+    color: blue;
+}
+
+[data-priority='urgent'] {
+    color: red;
+}
