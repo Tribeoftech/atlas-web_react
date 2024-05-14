@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import { StyleSheet, css } from 'aphrodite'
-import propTypes from 'prop-types
+import propTypes from 'prop-types'
 
 
 const NotificationItem = ({ type, value, html, markAsRead, id }) => {
