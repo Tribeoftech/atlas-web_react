@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import CourseListRow from './CourseListRow;
+import CourseListRow from './CourseListRow';
 
 
 // shallow render CourseListRow component
