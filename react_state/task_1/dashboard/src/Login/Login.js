@@ -18,11 +18,11 @@ class Login extends Component {
         this.setState({isLoggedIn: true});
     }
 
-    handleChangeEmail(event) {
+    handleChange(event) {
         this.setState({email: event.target.value});
     }
 
-    handleChangePassword(event) {
+    handleChange(event) {
         this.setState({password: event.target.value});
     }
 
