@@ -14,7 +14,7 @@ class Login extends Component {
 		}
 	}
 
-    handleLoginSubmit() {
+    handleLoginSubmi() {
         this.setState({isLoggedIn: true});
     }
 
