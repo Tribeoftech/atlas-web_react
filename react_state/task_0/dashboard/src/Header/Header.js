@@ -1,15 +1,31 @@
 import React, { Component } from 'react'
+import { StyleSheet, css } from 'aphrodite'
 import logo from '../assets/logo.jpg'
-import './Header.css'
 
-function Header(props) {
+function Header() {
 	return (
-		<header className="App-header">
-			<img src={logo} className="App-logo" alt="logo" />
+		<header className={css(headerStyles.root, headerStyles.appHeader)}>
+			<img src={logo} className={css(headerStyles.appLogo)} alt="logo" />
 			<h1>School dashboard</h1>
 		</header>
 	)
 }
 
+const primaryColor = '#E11D3F';
+
+const headerStyles = StyleSheet.create({
+	appHeader: {
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'center',
+		color: `${primaryColor}`,
+		borderBottom: `1px solid ${primaryColor}`,
+	},
+
+	appLogo: {
+		height: '200px',
+		width: '200px'
+	}
+});
 
 export default Header

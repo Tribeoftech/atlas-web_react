@@ -1,4 +1,5 @@
 import React, { memo } from 'react'
+import { StyleSheet, css } from 'aphrodite'
 import propTypes from 'prop-types'
 
 
@@ -9,15 +10,45 @@ const NotificationItem = ({ type, value, html, markAsRead, id }) => {
 	// - html: object with key '__html' and value: string
 	// - markAsRead: function
 	// - id: number
+	if (type === 'urgent') {
+		return (
+			<li onClick={() => { markAsRead(id) }}
+				data-notification-type={type}
+				dangerouslySetInnerHTML={html}
+				className={css(itemStyles.urgent)}
+			>
+				{value}
+			</li>
+		)
+	}
 	return (
-		<li onCLick={() => { markAsRead(id) }}
+		<li onClick={() => { markAsRead(id) }}
 			data-notification-type={type}
 			dangerouslySetInnerHTML={html}
+			className={css(itemStyles.default)}
 		>
-		  {value}
+			{value}
 		</li>
 	)
 }
+
+const itemStyles = StyleSheet.create({
+	urgent: {
+		color: 'red',
+		width: '100%',
+		borderBottom: '1px solid #000000',
+		fontSize: '20px',
+		padding: '10px 8px'
+	},
+
+	default: {
+		color: 'blue',
+		width: '100%',
+		borderBottom: '1px solid #000000',
+		fontSize: '20px',
+		padding: '10px 8px'
+	}
+})
 
 
 NotificationItem.propTypes = {
@@ -35,6 +66,5 @@ NotificationItem.defaultProps = {
 	markAsRead: () => { },
 	id: 0,
 }
-
 
 export default memo(NotificationItem)

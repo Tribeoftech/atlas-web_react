@@ -1,16 +1,22 @@
 import { shallow, mount, unmount } from '../../config/setupTests';
+import { StyleSheetTestUtils } from 'aphrodite';
 import WithLoggingHOC from '../HOC/WithLogging';
 import Login from './Login';
 
 
 // shallow render/mount login component
 describe('<Login />', () => {
+	beforeEach(() => {
+		StyleSheetTestUtils.suppressStyleInjection();
+	});
+
 	afterEach(() => {
 		jest.clearAllMocks();
 	});
 	
 	it('Tests that Login renders without crashing', () => {
 		const wrapper = shallow(<Login />);
+		wrapper.update();
 		expect(wrapper.exists()).toBe(true);
 	})
 
