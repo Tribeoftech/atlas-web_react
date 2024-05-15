@@ -10,15 +10,19 @@ import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBot
 import propTypes from 'prop-types'
 
 
-// implement class components
 class App extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			displayDrawer: false
+		}
+	}
 	// if App component is mounted, check if user is holding down 'control'
 	// and 'h' keys simultaneously, and if so, alert and call logOut function.
 
 	// class function to check if component is mounted
 	componentDidMount() {
 		window.addEventListener('keydown', this.keyDownHandler);
-		this.keyDownHandler
 	}
 
 	// class function to check if component is unmounted
