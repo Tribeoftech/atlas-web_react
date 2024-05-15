@@ -1,24 +1,33 @@
-# 0x02-react_props
+React intro
+ Novice
+ By: Johann Kerbrat, Engineering Manager at Uber Works
+ Weight: 1
+ Migrated to checker v2: 
+ Your score will be updated as you progress.
+ Manual QA review was done by Jeremiah Swank on May 13, 2024 9:13 AM
 
-## Resources
-- [React Official Website](https://intranet.hbtn.io/rltoken/AzZmM3L5OquFYJWHe8g2bw)
-- [Getting started with React](https://intranet.hbtn.io/rltoken/7weCeGmqmeFasQ0zbsZ37Q)
-- [React overview](https://intranet.hbtn.io/rltoken/Xn3ZnrOw6SJWUx9lNneiXg)
-- [React Developer Tools](https://intranet.hbtn.io/rltoken/X5odRXkXICE_i-HSZ-SZ1Q)
-- [Enzyme](https://intranet.hbtn.io/rltoken/PjUDhdib15XTXc600_0i3g)
-- [React Fragments](https://intranet.hbtn.io/rltoken/hFRPtNmD4SyIhT7r7uD3Uw)
-- [Typechecking with PropTypes](https://intranet.hbtn.io/rltoken/HQHXn22XJNgnHBdy-gkbyw0)
 
-## Learning Objectives
-- How to create basic React components using functions
-- How to reuse components
-- How to pass properties to components
-- How to define types for components
-- How to use Fragments
-- When to use a key to improve a loop’s performance
+Resources
+Read or watch:
 
-## Requirements
-- All your files will be interpreted/compiled on Ubuntu 18.04 LTS using ```node 12.x.x``` and npm ```6.x.x```
-- Allowed editors: ```vi```, ```vim```, ```emacs```, ```Visual Studio Code```
-- All your files should end with a new line
-- A ```README.md file```, at the root of the folder of the project, is mandatory
+React Official Website
+Getting started with React
+React overview
+create-react-app
+React Developer Tools
+What is Babel?
+Enzyme
+Learning Objectives
+At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
+
+How to create a basic Javascript application using React
+How to use the package create-react-app to start developing quickly with React
+What JSX is and how to use it
+How to use the React Developer Tools to debug your code
+How to use Enzyme’s Shadow rendering to test your application
+How to use React with Webpack & Babel
+Requirements
+All your files will be interpreted/compiled on Ubuntu 18.04 LTS using node 12.x.x and npm 6.x.x
+Allowed editors: vi, vim, emacs, Visual Studio Code
+All your files should end with a new line
+A README.md file, at the root of the folder of the project, is mandatory
