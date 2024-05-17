@@ -34,7 +34,7 @@ class App extends Component {
 		window.removeEventListener('keydown', this.keyDownHandler);
 	}
 
-	keyDownHandler = (e) =>
+	keyDownHandler = (e) => {
 		if (e.keyCode === 72 && e.ctrlKey) {
 			alert('Logging you out');
 			this.state.logOut();
