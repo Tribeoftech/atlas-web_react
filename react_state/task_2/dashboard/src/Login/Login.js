@@ -4,7 +4,7 @@ import WithLoggingHOC from '../HOC/WithLogging'
 
 
 class Login extends Component {
-	constructor(props) {
+	constructor(props) 
 		super(props);
 		this.state = {
 			email: '',
