@@ -44,6 +44,13 @@ describe('<App /> standard render tests', () => {
 		expect(wrapper.find('Footer').exists()).toBe(true);
 	})
 
+	it('Tests that CourseList is not displayed', () => {
+		const wrapper = shallow(<App />);
+		wrapper.update();
+		expect(wrapper.find('CourseList').length).toBe(0);
+		expect(wrapper.find('CourseList').exists()).toBe(false);
+	})
+
 	it('Tests that <Notifications /> is not displayed', () => {
 		const wrapper = shallow(<App />);
 		wrapper.update();
