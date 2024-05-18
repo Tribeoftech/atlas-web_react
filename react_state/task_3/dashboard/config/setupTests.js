@@ -6,5 +6,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 const shallow = Enzyme.shallow;
 const mount = Enzyme.mount;
+const unmount = Enzyme.unmount;
 
-export { shallow, mount };
+
+export { shallow, mount, unmount };
