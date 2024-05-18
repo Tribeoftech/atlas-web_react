@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { memo } from 'react'
+import { StyleSheet, css } from 'aphrodite'
 import propTypes from 'prop-types'
 
 
@@ -7,11 +8,47 @@ const NotificationItem = ({ type, value, html, markAsRead, id }) => {
 	// - type: string, required, default: 'default'
 	// - value: string
 	// - html: object with key '__html' and value: string
-	if ((type && value) && (typeof type === 'string' && typeof value === 'string') && (!html)) return(<li data-notification-type={type} onClick={() => markAsRead(id)}>{value}</li>)
-	if ((!type) && (html) && (html.__html)) return(<li data-notification-type="default" dangerouslySetInnerHTML={html} onClick={() => markAsRead(id)}></li>)
-	if ((type) && (html) && (html.__html)) return(<li data-notification-type={type} dangerouslySetInnerHTML={html} onClick={() => markAsRead(id)}></li>)
-	return(<li data-notification-type="default" onClick={markAsRead(id)}>NotificationItem: invalid props</li>)
+	// - markAsRead: function
+	// - id: number
+	if (type === 'urgent') {
+		return (
+			<li onClick={() => { markAsRead(id) }}
+				data-notification-type={type}
+				dangerouslySetInnerHTML={html}
+				className={css(itemStyles.urgent)}
+			>
+				{value}
+			</li>
+		)
+	}
+	return (
+		<li onClick={() => { markAsRead(id) }}
+			data-notification-type={type}
+			dangerouslySetInnerHTML={html}
+			className={css(itemStyles.default)}
+		>
+			{value}
+		</li>
+	)
 }
+
+const itemStyles = StyleSheet.create({
+	urgent: {
+		color: 'red',
+		width: '100%',
+		borderBottom: '1px solid #000000',
+		fontSize: '20px',
+		padding: '10px 8px'
+	},
+
+	default: {
+		color: 'blue',
+		width: '100%',
+		borderBottom: '1px solid #000000',
+		fontSize: '20px',
+		padding: '10px 8px'
+	}
+})
 
 
 NotificationItem.propTypes = {
@@ -26,8 +63,8 @@ NotificationItem.propTypes = {
 
 NotificationItem.defaultProps = {
 	type: 'default',
-	markAsRead: () => {},
+	markAsRead: () => { },
 	id: 0,
 }
 
-export default NotificationItem
+export default memo(NotificationItem)
