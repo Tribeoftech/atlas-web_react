@@ -1,4 +1,4 @@
-
+{
 	"name": "dashboard",
 	"version": "1.0.0",
 	"description": "",
@@ -56,6 +56,6 @@
 			"\\.(css|scss)$": "<rootDir>/__mocks__/styleMock.js",
 			"\\.(jpg|jpeg|png|gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
 		},
-		"testEnvironom"
+		"testEnvironment": "jsdom"
 	}
 }
