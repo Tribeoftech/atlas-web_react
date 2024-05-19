@@ -76,7 +76,6 @@ describe('<App /> standard render tests', () => {
 describe('<App /> context/state tests', () => {
 	beforeEach(() => {
 		StyleSheetTestUtils.suppressStyleInjection();
-		jest.clearAllMocks();
 	});
 
 	afterEach(() => {
@@ -175,9 +174,14 @@ describe('<App /> context/state tests', () => {
 		}
 
 		expect(wrapper.state().user).toEqual(user);
+
 		const instance = wrapper.instance();
+
 		instance.logIn(myUser.email, myUser.password);
+
 		expect(wrapper.state().user).toEqual(myUser);
+		expect(wrapper.state().user.isLoggedIn).toBe(true);
+
 		wrapper.unmount();
 	})
 
@@ -195,9 +199,49 @@ describe('<App /> context/state tests', () => {
 		}
 
 		expect(wrapper.state().user).toEqual(user);
+
 		const instance = wrapper.instance();
+
 		instance.logOut();
+
 		expect(wrapper.state().user).toEqual(user);
+		expect(wrapper.state().user.isLoggedIn).toBe(false);
+
+		wrapper.unmount();
+	})
+
+	it(`Tests that the markNotificationAsRead function within App.js
+	deletes the notification with the passed id from the listNotifications array`, () => {
+		const context = {
+			user: {
+				...user,
+			},
+			logOut: jest.fn(),
+			listNotifications: [
+				{ id: 1, type: "default", value: "New course available" },
+				{ id: 2, type: "urgent", value: "New resume available" },
+				{ id: 3, html: { __html: jest.fn() }, type: "urgent" }
+			]
+		}
+
+		const wrapper = mount(
+			<AppContext.Provider value={context}>
+				<App />
+			</AppContext.Provider>
+		);
+
+		const instance = wrapper.instance();
+
+		instance.markNotificationAsRead(3);
+
+		expect(wrapper.state().listNotifications).toEqual([
+			{ id: 1, type: "default", value: "New course available" },
+			{ id: 2, type: "urgent", value: "New resume available" }
+		]);
+	
+		expect(wrapper.state().listNotifications.length).toBe(2);
+		expect(wrapper.state().listNotifications[3]).toBe(undefined);
+
 		wrapper.unmount();
 	})
 })
@@ -213,10 +257,16 @@ describe('<App /> ctrl-h logout functionality', () => {
 
 	it(`Verifies that alert is called when ctrl-h is pressed`, () => {
 		const wrapper = mount(<App />);
+
 		window.alert = jest.fn();
+
 		wrapper.instance().keyDownHandler = window.alert;
+
 		wrapper.instance().keyDownHandler({ keyCode: 72, ctrlKey: true });
+
 		expect(window.alert).toHaveBeenCalled();
+		expect(window.alert).toHaveBeenCalledTimes(1);
+
 		wrapper.unmount();
 	})
 
@@ -232,7 +282,10 @@ describe('<App /> ctrl-h logout functionality', () => {
 		wrapper.setState({ logOut: spy});
 
 		wrapper.instance().keyDownHandler({ keyCode: 72, ctrlKey: true });
+
 		expect(spy).toHaveBeenCalled();
+		expect(spy).toHaveBeenCalledTimes(1);
+
 		wrapper.unmount();
 	})
 })

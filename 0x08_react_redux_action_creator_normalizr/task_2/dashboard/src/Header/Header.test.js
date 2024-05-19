@@ -45,6 +45,7 @@ describe('<Header />', () => {
 
 		expect(wrapper.find('#logoutSection').length).toBe(0);
 		expect(wrapper.find('#logoutSection').exists()).toBe(false);
+
 		wrapper.unmount();
 	})
 
@@ -66,6 +67,7 @@ describe('<Header />', () => {
 
 		expect(wrapper.find('#logoutSection').length).toBe(1);
 		expect(wrapper.find('#logoutSection').exists()).toBe(true);
+
 		wrapper.unmount();
 	})
 
@@ -91,6 +93,7 @@ describe('<Header />', () => {
 
 		expect(spy).toHaveBeenCalled();
 		expect(spy).toHaveBeenCalledTimes(1);
+
 		wrapper.unmount();
 	})
 });

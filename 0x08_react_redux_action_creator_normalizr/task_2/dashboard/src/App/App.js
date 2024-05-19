@@ -21,7 +21,12 @@ class App extends Component {
 				password: '',
 				isLoggedIn: false
 			},
-			logOut: this.logOut
+			logOut: this.logOut,
+			listNotifications: [
+				{ id: 1, type: "default", value: "New course available" },
+				{ id: 2, type: "urgent", value: "New resume available" },
+				{ id: 3, html: { __html: getLatestNotification() }, type: "urgent" }
+			]
 		}
 	};
 
@@ -69,19 +74,22 @@ class App extends Component {
 		})
 	}
 
+	markNotificationAsRead = (id) => {
+		// removes the notification from the array
+		const listNotifications = this.state.listNotifications.filter(notification => notification.id !== id);
+		this.setState({ listNotifications });
+	}
+
 	render() {
-		const { displayDrawer } = this.state;
+		const {
+			displayDrawer,
+			listNotifications
+		} = this.state;
 
 		const listCourses = [
 			{ id: 1, name: 'ES6', credit: '60' },
 			{ id: 2, name: 'Webpack', credit: '20' },
 			{ id: 3, name: 'React', credit: '40' }
-		]
-
-		const listNotifications = [
-			{ id: 1, type: "default", value: "New course available" },
-			{ id: 2, type: "urgent", value: "New resume available" },
-			{ id: 3, html: { __html: getLatestNotification() }, type: "urgent" }
 		]
 
 		return (
@@ -99,6 +107,7 @@ class App extends Component {
 						displayDrawer={displayDrawer}
 						handleDisplayDrawer={this.handleDisplayDrawer}
 						handleHideDrawer={this.handleHideDrawer}
+						markNotificationAsRead={this.markNotificationAsRead}
 					/>
 					<Header />
 					<div className="App-body">
@@ -137,9 +146,10 @@ const bodyStyles = StyleSheet.create({
 const footerStyles = StyleSheet.create({
 	Footer: {
 		display: 'flex',
-		flexDirection: 'row',
+		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
+		textAlign: 'center',
 		borderTop: `3px solid ${primaryColor}`,
 		padding: '1rem',
 		fontStyle: 'italic',
