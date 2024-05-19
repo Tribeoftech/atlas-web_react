@@ -7,28 +7,28 @@ class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isLoggedIn: false,
-            email: '',
-            password: '',
-            enableSubmit: false,
+			email: '',
+			password: '',
+			enableSubmit: false,
 		}
 	}
 
-    handleLoginSubmit() {
-        this.setState({isLoggedIn: true});
-    }
+	handleLoginSubmit() {
+		// Calls login function from App.js
+		this.props.logIn(this.state.email, this.state.password);
+	}
 
-    handleChangeEmail(event) {
-        this.setState({email: event.target.value});
-    }
+	handleChangeEmail(event) {
+		this.setState({ email: event.target.value });
+	}
 
-    handleChangePassword(event) {
-        this.setState({password: event.target.value});
-    }
+	handleChangePassword(event) {
+		this.setState({ password: event.target.value });
+	}
 
-    handleChangeEnableSubmit(event) {
-        this.setState({enableSubmit: event.target.value});
-    }
+	handleChangeEnableSubmit(event) {
+		this.setState({ enableSubmit: event.target.value });
+	}
 
 	render() {
 		return (
@@ -39,59 +39,61 @@ class Login extends Component {
 						<form>
 							<div className={css(loginStyles.inputs)}>
 								<label
-                                    className={css(loginStyles.label)}
-                                    htmlFor="email"
-                                    onClick={() => {
-									    document.getElementById('password').focus();
-								    }}>
-                                    Email
-                                </label>
+									className={css(loginStyles.label)}
+									htmlFor="email"
+									onClick={() => {
+										document.getElementById('password').focus();
+									}}>
+									Email
+								</label>
 								<input
-                                    type="email"
-                                    id="email"
-                                    className={css(loginStyles.input)}
-                                    value={this.state.email}
-                                    onChange={(event) => {
-                                        if (event.target.value.length > 0 && this.state.password.length > 0) {
-                                            this.setState({enableSubmit: true});
-                                        } else {
-                                            this.setState({enableSubmit: false});
-                                        }
-                                        this.handleChangeEmail(event);
-                                    }}
-                                />
+									type="email"
+									id="email"
+									autoComplete="current-email"
+									className={css(loginStyles.input)}
+									value={this.state.email}
+									onChange={(event) => {
+										if (event.target.value.length > 0 && this.state.password.length > 0) {
+											this.setState({ enableSubmit: true });
+										} else {
+											this.setState({ enableSubmit: false });
+										}
+										this.handleChangeEmail(event);
+									}}
+								/>
 								<label
-                                    className={css(loginStyles.label)}
-                                    htmlFor="password"
-                                    onClick={() => {
-									    document.getElementById('password').focus();
-								    }}>
-                                    Password
-                                </label>
-								<input 
-                                    type="password"
-                                    id="password"
-                                    className={css(loginStyles.input)} 
-                                    value={this.state.password}
-                                    onChange={(event) => {
-                                        if (event.target.value.length > 0 && this.state.email.length > 0) {
-                                            this.setState({enableSubmit: true});
-                                        } else {
-                                            this.setState({enableSubmit: false});
-                                        }
-                                        this.handleChangePassword(event);
-                                    }}
-                                />
+									className={css(loginStyles.label)}
+									htmlFor="password"
+									onClick={() => {
+										document.getElementById('password').focus();
+									}}>
+									Password
+								</label>
 								<input
-                                    type="submit"
+									type="password"
+									id="password"
+									autoComplete="current-password"
+									className={css(loginStyles.input)}
+									value={this.state.password}
+									onChange={(event) => {
+										if (event.target.value.length > 0 && this.state.email.length > 0) {
+											this.setState({ enableSubmit: true });
+										} else {
+											this.setState({ enableSubmit: false });
+										}
+										this.handleChangePassword(event);
+									}}
+								/>
+								<input
+									type="submit"
 									id="submit"
-                                    className={css(loginStyles.button)}
-                                    value="Login"
-                                    disabled={!this.state.enableSubmit}
-                                    onClick={() => {
-                                        this.handleLoginSubmit();
-                                    }}
-                                />
+									className={css(loginStyles.button)}
+									value="Login"
+									disabled={!this.state.enableSubmit}
+									onClick={() => {
+										this.handleLoginSubmit();
+									}}
+								/>
 							</div>
 						</form>
 					</main>
@@ -123,8 +125,7 @@ const loginStyles = StyleSheet.create({
 
 	input: {
 		height: '15px',
-		marginLeft: '0.2rem',
-		marginTop: '0.5rem',
+		margin: '0.5rem 0.5rem',
 	},
 
 	label: {
@@ -133,8 +134,8 @@ const loginStyles = StyleSheet.create({
 
 	button: {
 		height: '21px',
-		marginTop: '0.6rem',
-		maxWidth: '40px',
+		margin: '0.5rem 0 0 0.3rem',
+		maxWidth: '55px',
 	}
 })
 

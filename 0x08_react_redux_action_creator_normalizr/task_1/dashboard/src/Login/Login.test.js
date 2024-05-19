@@ -4,7 +4,6 @@ import WithLoggingHOC from '../HOC/WithLogging';
 import Login from './Login';
 
 
-// shallow render/mount login component
 describe('<Login />', () => {
 	beforeEach(() => {
 		StyleSheetTestUtils.suppressStyleInjection();

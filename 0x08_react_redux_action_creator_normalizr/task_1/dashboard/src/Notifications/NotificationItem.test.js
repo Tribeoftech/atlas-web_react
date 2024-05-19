@@ -4,7 +4,6 @@ import React from 'react';
 import NotificationItem from './NotificationItem';
 
 
-// shallow render NotificationItem component
 describe('<NotificationItem />', () => {
 	beforeEach(() => {
 		StyleSheetTestUtils.suppressStyleInjection();
