@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, css } from 'aphrodite';
 import propTypes from 'prop-types'
 
@@ -10,6 +10,8 @@ const CourseListRow = ({ isHeader, textFirstCell, textSecondCell }) => {
 	// - textSecondCell: string, default: null
 	const row_background_color = { backgroundColor: '#f5f5f5ab' };
 	const header_row_background_color = { backgroundColor: '#deb5b545' };
+	const rowChecked = { backgroundColor: '#e6e4e4' };
+	const [isChecked, setIsChecked] = useState(false);
 	let node;
 	let style;
 
@@ -28,10 +30,16 @@ const CourseListRow = ({ isHeader, textFirstCell, textSecondCell }) => {
 		style = row_background_color;
 		node =
 			<React.Fragment>
-				<td>{textFirstCell}</td>
+				<td>
+					<input type="checkbox" onClick={() => {
+						setIsChecked(!isChecked);
+					}} />
+					{textFirstCell}
+				</td>
 				<td>{textSecondCell}</td>
 			</React.Fragment>;
 	}
+	if (isChecked) style = rowChecked;
 	return (
 		<tr style={style}>
 			{node}
