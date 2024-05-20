@@ -1,7 +1,6 @@
-import { mount, unmount } from '../../config/setupTests';
+import { shallow, mount, unmount } from '../../config/setupTests';
 import Login from '../Login/Login';
 import WithLoggingHOC from './WithLogging';
-
 
 // With Logging is a HOC that logs the component name
 describe('<WithLogging />', () => {

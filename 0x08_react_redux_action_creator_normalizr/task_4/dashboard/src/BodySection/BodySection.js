@@ -30,4 +30,4 @@ BodySection. defaultProps = {
 	children: <React.Fragment />
 }
 
-export default BodySection;
+export default BodySection

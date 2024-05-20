@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { StyleSheet, css } from 'aphrodite';
 import propTypes from 'prop-types'
-import './CourseList.css'
 
 
 const CourseListRow = ({ isHeader, textFirstCell, textSecondCell }) => {
@@ -8,15 +8,58 @@ const CourseListRow = ({ isHeader, textFirstCell, textSecondCell }) => {
 	// - isHeader: bool, default: false
 	// - textFirstCell: string, required
 	// - textSecondCell: string, default: null
+	const row_background_color = { backgroundColor: '#f5f5f5ab' };
+	const header_row_background_color = { backgroundColor: '#deb5b545' };
+	const rowChecked = { backgroundColor: '#e6e4e4' };
+	const [isChecked, setIsChecked] = useState(false);
+	let node;
+	let style;
+
 	if (isHeader) {
-		if (textSecondCell === null) {
-			return <tr><th colSpan="2">{textFirstCell}</th></tr>;
+		style = header_row_background_color;
+		if (!textSecondCell) {
+			node = <th colSpan="2" className={css(rowStyles.th)}>{textFirstCell}</th>;
 		} else {
-			return <tr><th>{textFirstCell}</th><th>{textSecondCell}</th></tr>;
+			node =
+				<React.Fragment>
+					<th className={css(rowStyles.NOTth)}>{textFirstCell}</th>
+					<th className={css(rowStyles.NOTth)}>{textSecondCell}</th>
+				</React.Fragment>;
 		}
+	} else {
+		style = row_background_color;
+		node =
+			<React.Fragment>
+				<td>
+					<input type="checkbox" onClick={() => {
+						setIsChecked(!isChecked);
+					}} />
+					{textFirstCell}
+				</td>
+				<td>{textSecondCell}</td>
+			</React.Fragment>;
 	}
-	return <tr><td>{textFirstCell}</td><td>{textSecondCell}</td></tr>;
+	if (isChecked) style = rowChecked;
+	return (
+		<tr style={style}>
+			{node}
+		</tr>
+	);
 }
+
+const rowStyles = StyleSheet.create({
+	th: {
+		textAlign: 'center',
+		border: `1px solid`,
+		paddingBottom: `0.5rem`
+	},
+
+	NOTth: {
+		textAlign: 'start',
+		borderBottom: `1px solid`,
+	}
+})
+
 
 CourseListRow.defaultProps = {
 	isHeader: false,
@@ -32,4 +75,4 @@ CourseListRow.propTypes = {
 	])
 }
 
-export default CourseListRow;
+export default CourseListRow
