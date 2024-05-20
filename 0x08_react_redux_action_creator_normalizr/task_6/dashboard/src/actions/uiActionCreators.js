@@ -6,31 +6,31 @@ import {
 } from './uiActionTypes';
 
 
-// action creators
-export const login = (email, password) => {
-  return {
+// action creators with bound dispatch
+export const login = (email, password) => (dispatch) => {
+  dispatch({
     type: LOGIN,
     user: {
-      email: email,
-      password: password
+      email,
+      password
     }
-  }
-}
+  });
+};
 
-export const logout = () => {
-  return {
+export const logout = () => (dispatch) => {
+  dispatch({
     type: LOGOUT
-  }
-}
+  });
+};
 
-export const displayNotificationDrawer = () => {
-  return {
+export const displayNotificationDrawer = () => (dispatch) => {
+  dispatch({
     type: DISPLAY_NOTIFICATION_DRAWER
-  }
-}
+  });
+};
 
-export const hideNotificationDrawer = () => {
-  return {
+export const hideNotificationDrawer = () => (dispatch) => {
+  dispatch({
     type: HIDE_NOTIFICATION_DRAWER
-  }
-}
+  });
+};

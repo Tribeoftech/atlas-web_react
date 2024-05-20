@@ -1,17 +1,17 @@
 import { SELECT_COURSE, UNSELECT_COURSE } from "./courseActionTypes";
 
-// action creators
-export const selectCourse = index => {
-  return {
+
+// action creators with bound dispatch
+export const selectCourse = (courseId) => (dispatch) => {
+  dispatch({
     type: SELECT_COURSE,
-    index: index
-  };
-}
+    courseId,
+  });
+};
 
-
-export const unselectCourse = index => {
-  return {
+export const unselectCourse = (courseId) => (dispatch) => {
+  dispatch({
     type: UNSELECT_COURSE,
-    index: index
-  };
-}
+    courseId,
+  });
+};

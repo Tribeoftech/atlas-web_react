@@ -5,22 +5,29 @@ import {
 
 
 describe('markAsRead', () => {
-  it(`Tests calling markAsRead with 1 as argument`, () => {
-    expect(markAsRead(1)).toEqual({
+  it(`Tests that markAsRead's dispatch is called with the right type and index`, () => {
+    const dispatch = jest.fn();
+    const index = 1;
+
+    markAsRead(index)(dispatch);
+
+    expect(dispatch).toHaveBeenCalledWith({
       type: 'MARK_AS_READ',
-      index: 1
+      index
     });
   });
 })
 
 describe('setNotificationFilter', () => {
-  it(`Tests calling setNotificationFilter with a NotificationType that is in
-  NotificationTypeFilters`, () => {
-    const filter = "DEFAULT"
+  it(`Tests that setNotificationFilter's dispatch is called with the right type and filter`, () => {
+    const dispatch = jest.fn();
+    const filter = 'all';
 
-    expect(setNotificationFilter(filter)).toEqual({
+    setNotificationFilter(filter)(dispatch);
+
+    expect(dispatch).toHaveBeenCalledWith({
       type: 'SET_TYPE_FILTER',
-      filter: filter
+      filter
     });
   });
 })
