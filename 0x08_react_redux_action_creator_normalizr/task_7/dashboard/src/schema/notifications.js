@@ -1,4 +1,4 @@
-const jsonData = require('../../notifications.json');
+const jsonData = require('../../dist/notifications.json')
 const schema = require('normalizr').schema;
 const normalize = require('normalizr').normalize;
 
