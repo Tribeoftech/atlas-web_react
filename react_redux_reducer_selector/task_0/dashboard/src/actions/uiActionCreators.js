@@ -52,20 +52,13 @@ export const hideNotificationDrawer = () => (dispatch) => {
 };
 
 // async action creators
-export const loginRequest = (email, password) => (dispatch) => {
-  return async (dispatch) => {
+export const loginRequest = (email, password) => {
+  return (dispatch) => {
     dispatch(login(email, password));
-    try {
-      // will only succeed if server is running
-      const response = await fetch('http://localhost:8080/login-success.json');
-      const json = await response.json();
-      if (json.error) {
-        dispatch(loginFailure(json.error));
-      } else {
-        dispatch(loginSuccess(json.user));
-      }
-    } catch (error_1) {
-      dispatch(loginFailure(error_1));
-    }
+
+    return fetch('http://localhost:8564/login-success.json')
+      .then(response => response.json())
+      .then(user => dispatch(loginSuccess(user)))
+      .catch(error => dispatch(loginFailure(error)));
   };
 };
