@@ -6,6 +6,7 @@ import {
   DISPLAY_NOTIFICATION_DRAWER,
   HIDE_NOTIFICATION_DRAWER
 } from '../actions/uiActionTypes'
+import { Map } from 'immutable';
 
 // Initial state for the UI reducer
 export const initialState = {
@@ -14,36 +15,27 @@ export const initialState = {
   user: {}
 }
 
-// Reducer for the UI
-const uiReducer = (state = initialState, action) => {
+// Reducer For the UI, but using Map from Immutable.js
+const uiReducer = (state = Map(initialState), action) => {
   switch (action.type) {
     case DISPLAY_NOTIFICATION_DRAWER:
-      return {
-        ...state,
-        isNotificationDrawerVisible: true
-      }
+      return state.set('isNotificationDrawerVisible', true)
     case HIDE_NOTIFICATION_DRAWER:
-      return {
-        ...state,
-        isNotificationDrawerVisible: false
-      }
+      return state.set('isNotificationDrawerVisible', false)
     case LOGIN_SUCCESS:
-      return {
-        ...state,
+      return state.merge({
         isUserLoggedIn: true,
         user: action.payload
-      }
+      })
     case LOGIN_FAILURE:
-      return {
-        ...state,
+      return state.merge({
         isUserLoggedIn: false,
         error: action.payload
-      }
+      })
     case LOGOUT:
-      return {
-        ...state,
+      return state.merge({
         isUserLoggedIn: false,
-      }
+      })
     default:
       return state
   }
