@@ -15,3 +15,4 @@ export const setNotificationFilter = (filter) => (dispatch) => {
     filter
   });
 }
+
