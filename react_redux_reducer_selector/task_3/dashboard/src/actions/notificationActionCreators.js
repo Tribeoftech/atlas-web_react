@@ -1,4 +1,4 @@
-import { MARK_AS_READ, SET_TYPE_FILTER } from './notificationActionTypes';
+import { MARK_AS_READ, SET_TYPE_FILTER, FETCH_NOTIFICATIONS_SUCCESS } from './notificationActionTypes';
 
 
 // action creators with bound dispatch
@@ -16,3 +16,9 @@ export const setNotificationFilter = (filter) => (dispatch) => {
   });
 }
 
+export const fetchNotificationsSuccess = (notifications) => (dispatch) => {
+  dispatch({
+    type: FETCH_NOTIFICATIONS_SUCCESS,
+    data: notifications
+  });
+}
