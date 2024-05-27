@@ -1,7 +1,6 @@
 import { shallow } from 'enzyme';
 import { StyleSheetTestUtils } from 'aphrodite';
 import CourseList from './CourseList';
-import CourseListRow from './CourseListRow';
 
 
 // shallow render CourseList component
@@ -15,8 +14,8 @@ describe('<CourseList />', () => {
 		expect(wrapper.exists()).toBe(true);
 	})
 
-	it(`Renders two different CourseListRow Components`, () => {
+	it(`Renders several CourseListRow Components`, () => {
 		const wrapper = shallow(<CourseList />);
-		expect(wrapper.find(CourseListRow).length).toBe(2);
+		expect(wrapper.find('CourseListRow').length).toBe(2);
 	})
 })

@@ -28,6 +28,7 @@ const CourseList = ({ listCourses }) => {
 	)
 }
 
+
 const courseStyles = StyleSheet.create({
 	table: {
 		display: 'table',

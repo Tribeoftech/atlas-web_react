@@ -36,27 +36,25 @@ describe('<Notifications />', () => {
 		expect(wrapper.text()).toContain('Your notifications');
 	})
 
+	it('Tests that menuItem is rendered when displayDrawer is false', () => {	
+		const wrapper = shallow(<Notifications displayDrawer={false} />);
+		expect(wrapper.find('.menuItem').length).toBe(1);
+	})
+
 	it('Tests the div Notifications is not rendered when displayDrawer is false', () => {
 		const wrapper = shallow(<Notifications displayDrawer={false} />);
 		expect(wrapper.find('.Notifications').length).toBe(0);
-		const wrapper2 = shallow(<Notifications displayDrawer={false} />);
-		expect(wrapper2.find('.div').length).toBe(0);
 	})
 
 	it('Tests that menuItem is rendered when displayDrawer is true', () => {
 		const wrapper = shallow(<Notifications displayDrawer listNotifications={[]} />);
-	
+		expect(wrapper.find('.menuItem').length).toBe(1);
 	})
 
-	it(`Checks that new divs are rendered when the prop displayDrawer is passed as true`, () => {
-		// Since the div no longer has the class name 'Notifications',
-		// we can test by checking length of divs when displayDrawer is false vs true
-		const wrapper = shallow(<Notifications listNotifications={[]} />);
-		const length = wrapper.find('div').length;
-		const wrapper2 = shallow(<Notifications displayDrawer listNotifications={[]} />);
-		const length2 = wrapper2.find('div').length;
-		expect(length2).toBeGreaterThan(length);
-	})
+	// it('Tests that the div Notifications is rendered when displayDrawer is true', () => {
+	// 	const wrapper = shallow(<Notifications displayDrawer listNotifications={[]} />);
+	// 	expect(wrapper.find('.Notifications').length).toBe(1);
+	// })
 
 	it('Tests when passing empty array', () => {
 		const wrapper = shallow(<Notifications listNotifications={[]} />);

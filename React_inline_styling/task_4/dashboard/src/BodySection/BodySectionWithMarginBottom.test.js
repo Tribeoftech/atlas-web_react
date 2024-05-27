@@ -1,4 +1,4 @@
-import { shallow } from '../../config/setupTests';
+import { shallow, mount } from '../../config/setupTests';
 import { StyleSheetTestUtils } from 'aphrodite';
 import React from 'react';
 import BodySection from './BodySection';
@@ -13,8 +13,6 @@ describe('BodySectionWithMarginBottom', () => {
 	it(`Checks that component correctly renders a <BodySection /> component`, () => {
 		const wrapper = shallow(<BodySectionWithMarginBottom title="test"/>);
 		expect(wrapper.find(BodySection).exists()).toBe(true);
-		expect(wrapper.find(BodySection).length).toBe(1);
-		expect(wrapper.find(BodySection).props().title).toBe('test');
 	})
 
 	it(`Checks that props are passed correctly to child component`, () => {

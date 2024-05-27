@@ -28,4 +28,5 @@ const headerStyles = StyleSheet.create({
 	}
 });
 
+
 export default Header

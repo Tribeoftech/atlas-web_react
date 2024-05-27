@@ -67,4 +67,5 @@ NotificationItem.defaultProps = {
 	id: 0,
 }
 
+
 export default memo(NotificationItem)

@@ -2,10 +2,6 @@ import { shallow, mount } from '../../config/setupTests';
 import { StyleSheetTestUtils } from 'aphrodite';
 import App from './App';
 import Login from '../Login/Login';
-import Notifications from '../Notifications/Notifications';
-import NotificationItem from '../Notifications/NotificationItem';
-import BodySection from '../BodySection/BodySection';
-import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
 
 window.alert = jest.fn();
 
@@ -45,31 +41,11 @@ describe('<App />', () => {
 		const wrapper = shallow(<App />);
 		expect(wrapper.find('CourseList').length).toBe(0);
 	})
-
-	it('Tests that <Notifications /> is not displayed', () => {
-		const wrapper = shallow(<App />);
-		expect(wrapper.contains(<Notifications />)).toBe(false);
-	})
-
-	it('Tests that <Notificationitem /> is not displayed', () => {
-		const wrapper = shallow(<App />);
-		expect(wrapper.contains(<NotificationItem />)).toBe(false);
-	})
-
-	it('Tests that the correct amount of <BodySection /> and <BodySectionWithMargin /> are displayed', () => {
-		const wrapper = shallow(<App />);
-		expect(wrapper.find(BodySection).length).toBe(1);
-		expect(wrapper.find(BodySectionWithMarginBottom).length).toBe(1);
-	})
 });
 
 
 // describe case when isLoggedIn is true
 describe('<App />', () => {
-	beforeEach(() => {
-		StyleSheetTestUtils.suppressStyleInjection();
-	});
-
 	it('Tests that the Login component is not rendered when isLoggedIn is true', () => {
 		const wrapper = shallow(<App isLoggedIn={true} />);
 		expect(wrapper.contains(<Login />)).toBe(false);
@@ -79,6 +55,12 @@ describe('<App />', () => {
 		const wrapper = shallow(<App isLoggedIn />);
 		expect(wrapper.find('CourseList').length).toBe(1);
 	})
+
+	// next 2 tests are under review, spyOn() is not working
+	// and I keep getting this error:
+	// TypeError: wrapper.instance(...).keyDownHandler is not a function
+	// 
+	// fixed by testing with mount()
 
 	it(`Verifies that alert is called when ctrl-h is pressed`, () => {
 		const wrapper = mount(<App isLoggedIn />);

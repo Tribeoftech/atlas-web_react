@@ -23,9 +23,7 @@ class Notification extends Component {
 
 		return (
 			<>
-				<div className={css(notificationStyles.pDiv)}>
-					<p className={css(animationStyle.animation)}>Your notifications</p>
-				</div>
+				<p className={css(notificationStyles.p)}>Your notifications</p>
 				{displayDrawer && (
 					<div className={css(notificationStyles.notifications)}>
 						<button style={{
@@ -81,30 +79,11 @@ const notificationStyles = StyleSheet.create({
 		}
 	},
 
-	pDiv: {
+	p: {
 		position: 'absolute',
 		top: `0px`,
 		right: `15px`,
-		backgroundColor: '#fff8f8',
 	},
-})
-
-const opacityAnimation = {
-	'0%': { opacity: 0 },
-	'100%': { opacity: 1 },
-}
-
-const translateYAnimation = {
-	'0%': { transform: 'translateY(0px)' },
-	'50%': { transform: 'translateY(-10px)' },
-}
-
-const animationStyle = StyleSheet.create({
-	animation: {
-		animationName: [opacityAnimation, translateYAnimation],
-		animationDuration: '3s, 1200ms',
-		animationIterationCount: '1, 3'
-	}
 })
 
 

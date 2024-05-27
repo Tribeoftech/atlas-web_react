@@ -29,6 +29,8 @@ class Login extends Component {
 	}
 }
 
+const primaryColor = '#E11D3F';
+
 const loginStyles = StyleSheet.create({
 	appBody: {
 		display: 'flex',
