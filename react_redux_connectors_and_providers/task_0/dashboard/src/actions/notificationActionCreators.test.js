@@ -1,33 +1,34 @@
 import {
-  markAsRead,
-  setNotificationFilter
-} from './notificationActionCreators';
+  MARK_AS_READ,
+  SET_TYPE_FILTER,
+  NotificationTypeFilters,
+} from "./notificationActionTypes";
 
+import {
+  markAsAread,
+  setNotificationFilter,
+} from "./notificationActionCreators";
 
-describe('markAsRead', () => {
-  it(`Tests that markAsRead's dispatch is called with the right type and index`, () => {
-    const dispatch = jest.fn();
-    const index = 1;
+describe("action creators tests", function () {
+  it("returns correct action for markAsRead", function () {
+    const expectedReturn = {
+      type: MARK_AS_READ,
+      index: 1,
+    };
 
-    markAsRead(index)(dispatch);
+    const result = markAsAread(1);
 
-    expect(dispatch).toHaveBeenCalledWith({
-      type: 'MARK_AS_READ',
-      index
-    });
+    expect(result).toEqual(expectedReturn);
   });
-})
 
-describe('setNotificationFilter', () => {
-  it(`Tests that setNotificationFilter's dispatch is called with the right type and filter`, () => {
-    const dispatch = jest.fn();
-    const filter = 'all';
+  it("returns correct action for setNotificationFilter", function () {
+    const expectedReturn = {
+      type: SET_TYPE_FILTER,
+      filter: "DEFAULT",
+    };
 
-    setNotificationFilter(filter)(dispatch);
+    const result = setNotificationFilter(NotificationTypeFilters.DEFAULT);
 
-    expect(dispatch).toHaveBeenCalledWith({
-      type: 'SET_TYPE_FILTER',
-      filter
-    });
+    expect(result).toEqual(expectedReturn);
   });
-})
+});

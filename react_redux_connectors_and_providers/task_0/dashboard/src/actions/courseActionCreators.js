@@ -1,24 +1,19 @@
-import { SELECT_COURSE, UNSELECT_COURSE, FETCH_COURSE_SUCCESS } from "./courseActionTypes";
+import { SELECT_COURSE, UNSELECT_COURSE } from "./courseActionTypes";
 
-
-// action creators with bound dispatch
-export const selectCourse = (courseId) => (dispatch) => {
-  dispatch({
+export const selectCourse = (index) => {
+  return {
     type: SELECT_COURSE,
-    courseId,
-  });
+    index,
+  };
 };
 
-export const unselectCourse = (courseId) => (dispatch) => {
-  dispatch({
+export const boundSelectCourse = (index) => dispatch(selectCourse(index));
+
+export const unSelectCourse = (index) => {
+  return {
     type: UNSELECT_COURSE,
-    courseId,
-  });
+    index,
+  };
 };
 
-export const fetchCourseSuccess = (course) => (dispatch) => {
-  dispatch({
-    type: FETCH_COURSE_SUCCESS,
-    data: course,
-  });
-};
+export const boundUnSelectCourse = (index) => dispatch(unSelectCourse(index));

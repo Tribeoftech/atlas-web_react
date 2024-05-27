@@ -1,33 +1,51 @@
-import React, { Component } from 'react';
-import propTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { StyleSheet, css } from "aphrodite";
 
-
-// Reusable component
 class BodySection extends Component {
-	render() {
-		const { title } = this.props
+  constructor(props) {
+    super(props);
+  }
 
-		return (
-			<div className="BodySection">
-				<h2>{title}</h2>
-				{/* All remaining prop children are put into this span */}
-				<span>{this.props.children}</span>
-			</div>
-		)
-	}
+  render() {
+    const { children, title } = this.props;
+    return (
+      <div className={css(styles.bodySection)}>
+        <h2 className={css(styles.bodySectionH2)}>{title}</h2>
+        {children}
+      </div>
+    );
+  }
 }
 
+BodySection.defaultProps = {
+  title: "",
+};
 
 BodySection.propTypes = {
-	title: propTypes.string.isRequired,
-	children: propTypes.oneOfType([
-		propTypes.string,
-		propTypes.element
-	])
-}
+  title: PropTypes.string,
+};
 
-BodySection. defaultProps = {
-	children: <React.Fragment />
-}
+const screenSize = {
+  small: "@media screen and (max-width: 900px)",
+};
 
-export default BodySection
+const styles = StyleSheet.create({
+  bodySection: {
+    display: "flex",
+    flexWrap: "wrap",
+    width: "100%",
+    [screenSize.small]: {
+      boxSizing: "border-box",
+      paddingLeft: "50px",
+      paddingRight: "50px",
+      paddingBottom: "20px",
+    },
+  },
+
+  bodySectionH2: {
+    width: "100%",
+  },
+});
+
+export default BodySection;

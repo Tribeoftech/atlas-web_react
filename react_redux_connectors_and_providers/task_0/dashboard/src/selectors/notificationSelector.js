@@ -1,16 +1,13 @@
-// Selectors
-export const getNotifications = (state) => {
-  // returns list of notifications as Map object
-  return state.get('notifications');
-}
-
-export const getUnreadNotifications = (state) => {
-  // returns list of unread notifications as Map object
-  return state.get('notifications').filter(notification => !notification.get('isRead'));
-}
-
 export const filterTypeSelected = (state) => {
-  // returns filter type as string
-  return state.get('filter');
-}
-
+  return state.get("filter");
+};
+export const getNotifications = (state) => {
+  return state.get("notifications");
+};
+export const getUnreadNotifications = (state) => {
+  const notifications = state.get("notifications");
+  const filtered = notifications.filter(
+    (value, key) => value.get("isRead") === true
+  );
+  return filtered;
+};

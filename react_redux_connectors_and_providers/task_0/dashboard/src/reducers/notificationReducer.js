@@ -1,43 +1,41 @@
+import { Map } from "immutable";
+
 import {
+  FETCH_NOTIFICATIONS_SUCCESS,
   MARK_AS_READ,
   SET_TYPE_FILTER,
-  NotificationTypeFilters,
-  FETCH_NOTIFICATIONS_SUCCESS
-} from '../actions/notificationActionTypes';
-import notificationsNormalizer from '../schema/notifications';
-import { Map } from 'immutable';
+} from "../actions/notificationActionTypes";
 
-
-export const initialState = {
+export const initialNotificationState = {
   notifications: [],
-  filter: ""
-}
+  filter: "DEFAULT",
+};
 
-const notificationReducer = (state = Map(initialState), action) => {
-  console.log('action before switch: ', action);
+import notificationsNormalizer from "../schema/notifications";
+
+const notificationReducer = (state = Map(initialNotificationState), action) => {
   switch (action.type) {
     case FETCH_NOTIFICATIONS_SUCCESS:
       const normalizedData = notificationsNormalizer(action.data);
-      console.log('normalizedData in FETCH switch:', normalizedData);
 
-      Object.keys(normalizedData.notifications).forEach(key => {
+      Object.keys(normalizedData.notifications).map((key) => {
         normalizedData.notifications[key].isRead = false;
       });
-
-      // will need to add a filter attribute to the normalizedData object for testing
       return state.merge(normalizedData);
-    
+
     case MARK_AS_READ:
-      console.log('state in MARK_AS_READ switch: ', state);
-      console.log('action in MARK_AS_READ switch: ', action);
-      return state.setIn(['notifications', action.notificationId - 1, 'isRead'], true);
+      return state.setIn(
+        ["notifications", String(action.index), "isRead"],
+        true
+      );
+
     case SET_TYPE_FILTER:
-      console.log('state in SET_TYPE_FILTER switch: ', state);
-      console.log('action in SET_TYPE_FILTER switch: ', action);
-      return state.set('filter', action.filter);
+      return state.set("filter", action.filter);
+
     default:
-      return state;
+      break;
   }
-}
+  return state;
+};
 
 export default notificationReducer;

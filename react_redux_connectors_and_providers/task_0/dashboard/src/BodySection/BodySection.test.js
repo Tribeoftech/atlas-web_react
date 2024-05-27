@@ -1,25 +1,35 @@
-import { shallow, mount } from '../../config/setupTests';
-import { StyleSheetTestUtils } from 'aphrodite';
-import BodySection from './BodySection';
+import { shallow, mount } from "enzyme";
+import React from "react";
+import BodySection from "./BodySection";
+import { StyleSheetTestUtils } from "aphrodite";
 
+describe("<BodySection />", () => {
+  beforeAll(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+  afterAll(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
 
-describe('<BodySection />', () => {
-	beforeEach(() => {
-		StyleSheetTestUtils.suppressStyleInjection();
-	});
+  it("BodySection renders without crashing", () => {
+    const wrapper = shallow(<BodySection />);
+    expect(wrapper.exists()).toEqual(true);
+  });
 
-	it(`Renders h2 and children correctly when no children in props`, () => {
-		const wrapper = shallow(<BodySection title="My title" />);
-		expect(wrapper.exists()).toBe(true);
-		expect(wrapper.find('h2').length).toBe(1);
-		expect(wrapper.find('h2').text()).toBe('My title');
-	})
+  it("BodySection renders without crashing", () => {
+    const wrapper = shallow(
+      <BodySection title="test title">
+        <p>test children node</p>
+      </BodySection>
+    );
 
-	it(`Renders h2 and children correctly when children in props`, () => {
-		const wrapper = shallow(<BodySection title="test title"><p>test children</p></BodySection>)
-		expect(wrapper.find('h2').text()).toBe('test title');
-		expect(wrapper.find('p').text()).toBe('test children');
-		expect(wrapper.find('p').length).toBe(1);
-		expect(wrapper.find('h2').length).toBe(1);
-	})
-})
+    const h2 = wrapper.find("h2");
+    const p = wrapper.find("p");
+
+    expect(h2).toHaveLength(1);
+    expect(h2.text()).toEqual("test title");
+
+    expect(p).toHaveLength(1);
+    expect(p.text()).toEqual("test children node");
+  });
+});

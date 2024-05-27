@@ -1,46 +1,109 @@
-import notificationReducer from "../reducers/notificationReducer";
+import { Map, fromJS } from "immutable";
+
 import {
-  FETCH_NOTIFICATIONS_SUCCESS
-} from '../actions/notificationActionCreators';
-import { 
+  filterTypeSelected,
   getNotifications,
   getUnreadNotifications,
-  filterTypeSelected
-} from './notificationSelector';
-import notificationsNormalizer from '../schema/notifications';
-import { Map } from 'immutable';
+} from "./notificationSelector";
 
+import notificationReducer, {
+  initialNotificationState,
+} from "../reducers/notificationReducer";
 
-describe("notificationSelector", () => {
-  let initData = [
-    { id: 1, type: "default", value: "New course available", isRead: false },
-    { id: 2, type: "urgent", value: "New resume available", isRead: false },
-    { id: 3, type: "urgent", html: { __html: 'HTML' }, isRead: false },
-  ];
+import notificationsNormalizer from "../schema/notifications";
 
-  it(`Tests that getNotifications returns the correct data`, () => {
-    const normalizedData = notificationsNormalizer(initData);
+describe("Selectors tests", function () {
+  it("test that filterTypeSelected works as expected", function () {
+    const state = notificationReducer(undefined, {});
 
-    const state = Map({
-      notifications: normalizedData.notifications,
-      filter: ""
-    })
+    const selected = filterTypeSelected(state);
 
-    expect(getNotifications(state)).toEqual(normalizedData.notifications);
-  })
+    expect(selected).toEqual(initialNotificationState.filter);
+  });
 
-  it(`Tests that filterTypeSelected's return contains the correct type of filter`, () => {
-    const normalizedData = notificationsNormalizer(initData);
+  it("test that getNotifications returns a list of the message entities within the reducer", function () {
+    const initialState = {
+      filter: "DEFAULT",
+      notifications: [
+        {
+          id: 1,
+          isRead: false,
+          type: "default",
+          value: "New course available",
+        },
+        {
+          id: 2,
+          isRead: false,
+          type: "urgent",
+          value: "New resume available",
+        },
+        {
+          id: 3,
+          isRead: false,
+          type: "urgent",
+          value: "New data available",
+        },
+      ],
+    };
 
-    const state = Map({
-      notifications: normalizedData.notifications,
-      filter: "urgent"
-    })
+    initialState.notifications = notificationsNormalizer(
+      initialState.notifications
+    ).notifications;
 
-    expect(filterTypeSelected(state)).toContain("urgent");
-  })
+    const state = notificationReducer(fromJS(initialState), {});
 
-  // it(`Tests that getUnreadNotifications returns the correct data`, () => {
-    
-  // })
-})
+    const selected = getNotifications(state);
+
+    expect(state instanceof Map).toEqual(true);
+    expect(selected.toJS()).toEqual(
+      notificationsNormalizer(initialState.notifications).notifications
+    );
+  });
+  it("test that getUnreadNotifications return a list of the message entities within the reducer", function () {
+    const initialState = {
+      filter: "DEFAULT",
+      notifications: [
+        {
+          id: 1,
+          isRead: false,
+          type: "default",
+          value: "New course available",
+        },
+        {
+          id: 2,
+          isRead: false,
+          type: "urgent",
+          value: "New resume available",
+        },
+        {
+          id: 3,
+          isRead: true,
+          type: "urgent",
+          value: "New data available",
+        },
+      ],
+    };
+
+    const expectedResult = [
+      {
+        id: 3,
+        isRead: true,
+        type: "urgent",
+        value: "New data available",
+      },
+    ];
+
+    initialState.notifications = notificationsNormalizer(
+      initialState.notifications
+    ).notifications;
+
+    const state = notificationReducer(fromJS(initialState), {});
+
+    const selected = getUnreadNotifications(state);
+
+    expect(state instanceof Map).toEqual(true);
+    expect(selected.toJS()).toEqual(
+      notificationsNormalizer(expectedResult).notifications
+    );
+  });
+});

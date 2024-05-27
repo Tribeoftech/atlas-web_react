@@ -1,145 +1,103 @@
 import {
+  LOGIN,
+  LOGOUT,
+  DISPLAY_NOTIFICATION_DRAWER,
+  HIDE_NOTIFICATION_DRAWER,
+} from "./uiActionTypes";
+
+import {
   login,
-  loginRequest,
   logout,
   displayNotificationDrawer,
-  hideNotificationDrawer
-} from './uiActionCreators';
+  hideNotificationDrawer,
+  loginRequest,
+  loginSuccess,
+  loginFailure,
+} from "./uiActionCreators";
 
+import fetchMock from "fetch-mock";
 
-describe('login', () => {
-  it(`Tests that login's dispatch is called with the right type and user`, () => {
-    const dispatch = jest.fn();
-    const email = 'email';
-    const password = 'password';
+import configureStore from "redux-mock-store";
+import thunk from "redux-thunk";
+const middlewares = [thunk];
+const mockStore = configureStore(middlewares);
 
-    login(email, password)(dispatch);
+describe("action creators tests", function () {
+  it("returns correct action for login", function () {
+    const user = { email: "larry@gmail.com", password: 123456789 };
 
-    expect(dispatch).toHaveBeenCalledWith({
-      type: 'LOGIN',
-      user: {
-        email,
-        password
-      }
+    const expectedReturn = { type: LOGIN, user };
+
+    const result = login(user.email, user.password);
+
+    expect(result).toEqual(expectedReturn);
+  });
+  it("returns correct action for logout", function () {
+    const expectedReturn = { type: LOGOUT };
+
+    const result = logout();
+
+    expect(result).toEqual(expectedReturn);
+  });
+  it("returns correct action for displayNotificationDrawer", function () {
+    const expectedReturn = { type: DISPLAY_NOTIFICATION_DRAWER };
+
+    const result = displayNotificationDrawer();
+
+    expect(result).toEqual(expectedReturn);
+  });
+  it("returns correct action for hideNotificationDrawer", function () {
+    const expectedReturn = { type: HIDE_NOTIFICATION_DRAWER };
+
+    const result = hideNotificationDrawer();
+
+    expect(result).toEqual(expectedReturn);
+  });
+
+  describe("Async action creators tests", function () {
+    afterEach(() => {
+      fetchMock.restore();
     });
-  })
-})
 
-describe('logout', () => {
-  it(`Tests that logout's dispatch is called with the right type`, () => {
-    const dispatch = jest.fn();
+    it("should verify that if the API returns the right response, the store received two actions LOGIN and LOGING_SUCCESS", () => {
+      // Return the promise
+      const store = mockStore({});
+      fetchMock.restore();
 
-    logout()(dispatch);
+      const user = {
+        email: "test@test.com",
+        password: "123456",
+      };
 
-    expect(dispatch).toHaveBeenCalledWith({
-      type: 'LOGOUT'
+      fetchMock.get("http://localhost:8564/login-success.json", "{}");
+
+      return store
+        .dispatch(loginRequest(user.email, user.password))
+        .then(() => {
+          const actions = store.getActions();
+          expect(actions[0]).toEqual(login(user.email, user.password));
+          expect(actions[1]).toEqual(loginSuccess());
+        });
     });
-  })
-})
 
-describe('displayNotificationDrawer', () => {
-  it(`Tests that displayNotificationDrawer's dispatch is called with the right type`, () => {
-    const dispatch = jest.fn();
+    it("should verify that if the API query fails, the store received two actions LOGIN and LOGIN_FAILURE", () => {
+      // Return the promise
+      const store = mockStore({});
 
-    displayNotificationDrawer()(dispatch);
+      fetchMock.mock("http://localhost:8564/login-success.json", 500);
 
-    expect(dispatch).toHaveBeenCalledWith({
-      type: 'DISPLAY_NOTIFICATION_DRAWER'
+      const user = {
+        email: "test@test.com",
+        password: "123456",
+      };
+
+      return store
+        .dispatch(loginRequest(user.email, user.password))
+        .then(() => {
+          const actions = store.getActions();
+          expect(actions[0]).toEqual(login(user.email, user.password));
+          expect(actions[1]).toEqual(loginFailure());
+        });
     });
-  })
-})
-
-describe('hideNotificationDrawer', () => {
-  it(`Tests that hideNotificationDrawer's dispatch is called with the right type`, () => {
-    const dispatch = jest.fn();
-
-    hideNotificationDrawer()(dispatch);
-
-    expect(dispatch).toHaveBeenCalledWith({
-      type: 'HIDE_NOTIFICATION_DRAWER'
-    });
-  })
-})
-
-// describe('loginRequest', () => {
-//   it(`Tests that loginRequest's dispatch is called with the right type when API 
-//   responds with data`, () => {
-//     // this test will only work if the server is running
-//     const dispatch = jest.fn();
-//     const email = 'email';
-//     const password = 'password';
-
-//     loginRequest(email, password)(dispatch);
-
-//     expect(dispatch).toHaveBeenCalledWith({
-//       type: 'LOGIN'
-//     });
-
-//     expect(dispatch).toHaveBeenCalledWith({
-//       type: 'LOGIN_SUCCESS',
-//       user: {
-//         email,
-//         password
-//       }
-//     });
-//   })
-
-//   it(`Tests that loginRequest's dispatch returns the right response when API
-//   responds with data`, () => {
-//     // this test will only work if the server is running
-//     const dispatch = jest.fn();
-//     const email = 'email';
-//     const password = 'password';
-
-//     const response = loginRequest(email, password)(dispatch);
-
-//     expect(response).toEqual({
-//       type: 'LOGIN_SUCCESS',
-//       user: {
-//         email,
-//         password
-//       }
-//     });
-//   })
-
-//   it(`Tests that loginRequest's dispatch is called with the right type when API
-//   responds with error message`, () => {
-//     // this test will only work if the server is running
-//     const dispatch = jest.fn();
-//     const email = 'email';
-//     const password = 'password';
-
-//     loginRequest(email, password)(dispatch);
-
-//     expect(dispatch).toHaveBeenCalledWith({
-//       type: 'LOGIN'
-//     });
-
-//     expect(dispatch).toHaveBeenCalledWith({
-//       type: 'LOGIN_FAILURE',
-//     });
-//   })
-
-//   it(`Tests that loginRequest's dispatch returns the right response when API
-//   responds with error message`, () => {
-//     // this test will only work if the server is running
-//     const dispatch = jest.fn();
-//     const email = 'email';
-//     const password = 'password';
-
-//     const response = loginRequest(email, password)(dispatch);
-
-//     expect(response).toEqual(fetchMock.mock('http://localhost:8564/login-success.json', {
-//       email,
-//       password
-//     }));
-
-//     expect(dispatch).toHaveBeenCalledWith({
-//       type: 'LOGIN'
-//     });
-
-//     expect(dispatch).toHaveBeenCalledWith({
-//       type: 'LOGIN_FAILURE',
-//     });
-//   })
-// })
+  });
+});

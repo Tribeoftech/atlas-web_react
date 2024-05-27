@@ -1,24 +1,20 @@
-import { MARK_AS_READ, SET_TYPE_FILTER, FETCH_NOTIFICATIONS_SUCCESS } from './notificationActionTypes';
+import { MARK_AS_READ, SET_TYPE_FILTER } from "./notificationActionTypes";
 
-
-// action creators with bound dispatch
-export const markAsRead = (index) => (dispatch) => {
-  dispatch({
+export const markAsAread = (index) => {
+  return {
     type: MARK_AS_READ,
-    index
-  });
+    index,
+  };
 };
 
-export const setNotificationFilter = (filter) => (dispatch) => {
-  dispatch({
-    type: SET_TYPE_FILTER,
-    filter
-  });
-}
+export const boundMarkAsAread = (index) => dispatch(markAsAread(index));
 
-export const fetchNotificationsSuccess = (notifications) => (dispatch) => {
-  dispatch({
-    type: FETCH_NOTIFICATIONS_SUCCESS,
-    data: notifications
-  });
-}
+export const setNotificationFilter = (filter) => {
+  return {
+    type: SET_TYPE_FILTER,
+    filter,
+  };
+};
+
+export const boundSetNotificationFilter = (filter) =>
+  dispatch(setNotificationFilter(filter));

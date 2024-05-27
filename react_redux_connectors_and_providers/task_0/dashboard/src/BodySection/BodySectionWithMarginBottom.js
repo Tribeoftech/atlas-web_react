@@ -1,38 +1,42 @@
-import React, { Component } from 'react';
-import { StyleSheet, css } from 'aphrodite';
-import propTypes from 'prop-types';
-import BodySection from './BodySection';
-
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import BodySection from "./BodySection";
+import { StyleSheet, css } from "aphrodite";
 
 class BodySectionWithMarginBottom extends Component {
-	render() {
-		return (
-			<div className={css(bodyStyles.bodySectionWithMarginBottom)}>
-				{/* calls BodySection with all props */}
-				{/* "title" prop will be in h2, all else in following p tag */}
-				<BodySection {...this.props} />
-			</div>
-		)
-	}
-}
+  constructor(props) {
+    super(props);
+  }
 
-const bodyStyles = StyleSheet.create({
-	bodySectionWithMarginBottom: {
-		marginBottom: '40px'
-	}
-})
-
-
-BodySectionWithMarginBottom.propTypes = {
-	title: propTypes.string.isRequired,
-	children: propTypes.oneOfType([
-		propTypes.string,
-		propTypes.element
-	])
+  render() {
+    return (
+      <div className={css(styles.bodySectionWithMargin)}>
+        <BodySection {...this.props} />
+      </div>
+    );
+  }
 }
 
 BodySectionWithMarginBottom.defaultProps = {
-	children: <React.Fragment />
-}
+  title: "",
+};
 
-export default BodySectionWithMarginBottom
+BodySectionWithMarginBottom.propTypes = {
+  title: PropTypes.string,
+};
+
+const screenSize = {
+  small: "@media screen and (max-width: 900px)",
+};
+
+const styles = StyleSheet.create({
+  bodySectionWithMargin: {
+    marginBottom: "40px",
+    width: "100%",
+    [screenSize.small]: {
+      marginBottom: "10px",
+    },
+  },
+});
+
+export default BodySectionWithMarginBottom;

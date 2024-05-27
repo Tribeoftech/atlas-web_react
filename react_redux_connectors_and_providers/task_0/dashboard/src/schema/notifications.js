@@ -1,41 +1,44 @@
-const jsonData = require('../../dist/notifications.json')
-import { normalize, schema } from 'normalizr';
+import * as notificationsData from "../../notifications.json";
+import { normalize, schema } from "normalizr";
 
+const user = new schema.Entity("users");
 
-const user = new schema.Entity('users');
+const message = new schema.Entity(
+  "messages",
+  {},
+  {
+    idAttribute: "guid",
+  }
+);
 
-const message = new schema.Entity('messages', {}, {
-  idAttribute: 'guid',
-});
-
-const notification = new schema.Entity('notifications', {
+const notification = new schema.Entity("notifications", {
   author: user,
-  context: message
+  context: message,
 });
 
-export const normalizedData = normalize(jsonData, [notification]);
+const normalizedData = normalize(notificationsData.default, [notification]);
+
+export { normalizedData };
+
+export function getAllNotificationsByUser(userId) {
+  const notifications = normalizedData.entities.notifications;
+  const messages = normalizedData.entities.messages;
+
+  const notificationsByUser = [];
+
+  for (const property in notifications) {
+    if (notifications[property].author === userId) {
+      notificationsByUser.push(messages[notifications[property].context]);
+    }
+  }
+
+  return notificationsByUser;
+}
 
 const notificationsNormalizer = (data) => {
   const normalizedData = normalize(data, [notification]);
-  // only return entities to keep filter attribute, not .entities.notifications
-  return normalizedData.entities;
-}
 
-export const getAllNotificationsByUser = (userId) => {
-  // returns a list containing all 'context' objects from the normalizedData variable
-  // when the author id matches the userId parameter
-  //
-  // @userId: string
-  //
-  // returns: list containing all 'context' objects when 
-  // the author id matches the userId parameter
-  const myList = [];
-  jsonData.forEach((notification) => {
-    if (notification.author.id === userId) {
-      myList.push(notification.context);
-    }
-  })
-  return myList;
-}
+  return normalizedData.entities;
+};
 
 export default notificationsNormalizer;

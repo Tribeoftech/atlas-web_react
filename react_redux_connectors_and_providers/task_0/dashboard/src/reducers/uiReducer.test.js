@@ -1,30 +1,23 @@
-import {
-  LOGIN,
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE,
-  LOGOUT,
-  DISPLAY_NOTIFICATION_DRAWER,
-  HIDE_NOTIFICATION_DRAWER
-} from '../actions/uiActionTypes'
-import { Map } from 'immutable'
-import uiReducer, { initialState } from './uiReducer'
+import uiReducer, { initialState } from "./uiReducer";
+import { DISPLAY_NOTIFICATION_DRAWER } from "../actions/uiActionTypes";
 
+describe("uiReducer tests", function () {
+  it("verifies the state returned by the uiReducer function equals the initial state when no action is passed", function () {
+    const state = uiReducer(undefined, {});
 
-describe('uiReducer', () => {
-  // modified tests for uiReducer using Map from Immutable.js
-  it(`Tests that state returned by uiReducer equals initial state when no action is passed`, () => {
-    expect(uiReducer(undefined, {})).toEqual(Map(initialState))
-  })
+    expect(state.toJS()).toEqual(initialState);
+  });
+  it("verifies the state returned by the uiReducer function equals the initial state when the action SELECT_COURSE is passed", function () {
+    const state = uiReducer(undefined, { type: "SELECT_COURSE" });
 
-  it(`Tests that state returned by uiReducer equals initial state when action 'SELECT_COURSE'
-  is passed`, () => {
-    expect(uiReducer(undefined, { type: 'SELECT_COURSE' })).toEqual(Map(initialState))
-  })
-
-  it(`Tests that action 'DISPLAY_NOTIFICATION_DRAWER' returns state with isNotificationDrawerVisible`, () => {
-    // const state = uiReducer(undefined, { type: DISPLAY_NOTIFICATION_DRAWER });
-    // expect(state.isNotificationDrawerVisible).toEqual(true);
+    expect(state.toJS()).toEqual(initialState);
+  });
+  it("verifies the state returned by the uiReducer function, when the action DISPLAY_NOTIFICATION_DRAWER is passed, changes correctly the isNotificationDrawerVisible property", function () {
     const state = uiReducer(undefined, { type: DISPLAY_NOTIFICATION_DRAWER });
-    expect(state.get('isNotificationDrawerVisible')).toEqual(true);
-  })
-})
+
+    expect(state.toJS()).toEqual({
+      ...initialState,
+      isNotificationDrawerVisible: true,
+    });
+  });
+});

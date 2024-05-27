@@ -1,143 +1,103 @@
-import React, { Component } from 'react'
-import { StyleSheet, css } from 'aphrodite'
-import WithLoggingHOC from '../HOC/WithLogging'
-
+import React, { Component } from "react";
+import { StyleSheet, css } from "aphrodite";
 
 class Login extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			email: '',
-			password: '',
-			enableSubmit: false,
-		}
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+      enableSubmit: false,
+    };
+    this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+    this.handleChangeEmail = this.handleChangeEmail.bind(this);
+    this.handleChangePassword = this.handleChangePassword.bind(this);
+  }
 
-	handleLoginSubmit() {
-		// Calls login function from App.js
-		this.props.logIn(this.state.email, this.state.password);
-	}
+  handleLoginSubmit(event) {
+    event.preventDefault();
 
-	handleChangeEmail(event) {
-		this.setState({ email: event.target.value });
-	}
+    const { email, password } = this.state;
 
-	handleChangePassword(event) {
-		this.setState({ password: event.target.value });
-	}
+    this.props.logIn(email, password);
+  }
 
-	handleChangeEnableSubmit(event) {
-		this.setState({ enableSubmit: event.target.value });
-	}
+  handleChangeEmail(event) {
+    const { value } = event.target;
+    const { password } = this.state;
 
-	render() {
-		return (
-			<React.Fragment>
-				<div className="App">
-					<main className={css(loginStyles.appBody)}>
-						<p>Login to access the full dashboard</p>
-						<form>
-							<div className={css(loginStyles.inputs)}>
-								<label
-									className={css(loginStyles.label)}
-									htmlFor="email"
-									onClick={() => {
-										document.getElementById('password').focus();
-									}}>
-									Email
-								</label>
-								<input
-									type="email"
-									id="email"
-									autoComplete="current-email"
-									className={css(loginStyles.input)}
-									value={this.state.email}
-									onChange={(event) => {
-										if (event.target.value.length > 0 && this.state.password.length > 0) {
-											this.setState({ enableSubmit: true });
-										} else {
-											this.setState({ enableSubmit: false });
-										}
-										this.handleChangeEmail(event);
-									}}
-								/>
-								<label
-									className={css(loginStyles.label)}
-									htmlFor="password"
-									onClick={() => {
-										document.getElementById('password').focus();
-									}}>
-									Password
-								</label>
-								<input
-									type="password"
-									id="password"
-									autoComplete="current-password"
-									className={css(loginStyles.input)}
-									value={this.state.password}
-									onChange={(event) => {
-										if (event.target.value.length > 0 && this.state.email.length > 0) {
-											this.setState({ enableSubmit: true });
-										} else {
-											this.setState({ enableSubmit: false });
-										}
-										this.handleChangePassword(event);
-									}}
-								/>
-								<input
-									type="submit"
-									id="submit"
-									className={css(loginStyles.button)}
-									value="Login"
-									disabled={!this.state.enableSubmit}
-									onClick={() => {
-										this.handleLoginSubmit();
-									}}
-								/>
-							</div>
-						</form>
-					</main>
-				</div>
-			</React.Fragment>
-		)
-	}
+    if (value !== "" && password !== "") this.setState({ enableSubmit: true });
+    else this.setState({ enableSubmit: false });
+
+    this.setState({ email: event.target.value });
+  }
+
+  handleChangePassword(event) {
+    const { value } = event.target;
+    const { email } = this.state;
+
+    if (email !== "" && value !== "") this.setState({ enableSubmit: true });
+    else this.setState({ enableSubmit: false });
+
+    this.setState({ password: event.target.value });
+  }
+
+  render() {
+    return (
+      <div className={css(styles.login)}>
+        <p>Login to access the full dashboard</p>
+        <form action="" onSubmit={this.handleLoginSubmit}>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            className={css(styles.loginInput)}
+            value={this.state.email}
+            onChange={this.handleChangeEmail}
+          />
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            className={css(styles.loginInput)}
+            value={this.state.password}
+            onChange={this.handleChangePassword}
+          />
+          <input type="submit" disabled={!this.state.enableSubmit} />
+        </form>
+      </div>
+    );
+  }
 }
 
-const loginStyles = StyleSheet.create({
-	appBody: {
-		display: 'flex',
-		flexDirection: 'column',
-		marginBottom: '3rem',
-		height: '100%',
-	},
+const screenSize = {
+  small: "@media screen and (max-width: 900px)",
+};
 
-	inputs: {
-		'@media (min-width: 350px)': {
-			display: 'flex',
-			flexDirection: 'column',
-			maxWidth: '200px'
-		},
-		'@media (min-width: 900px)': {
-			display: 'flex',
-			flexDirection: 'row',
-		}
-	},
+const styles = StyleSheet.create({
+  login: {
+    margin: "50px",
+    flexGrow: 1,
+    [screenSize.small]: {
+      marginTop: "10px",
+      marginLeft: 0,
+      marginRight: 0,
+      marginBottom: 0,
+    },
+  },
 
-	input: {
-		height: '15px',
-		margin: '0.5rem 0.5rem',
-	},
+  loginInput: {
+    marginLeft: "10px",
+    marginRight: "20px",
+    [screenSize.small]: {
+      display: "block",
+      marginLeft: 0,
+      marginTop: "10px",
+      marginBottom: "10px",
+    },
+  },
+});
 
-	label: {
-		marginTop: '0.5rem',
-	},
-
-	button: {
-		height: '21px',
-		margin: '0.5rem 0 0 0.3rem',
-		maxWidth: '55px',
-	}
-})
-
-
-export default WithLoggingHOC(Login)
+export default Login;

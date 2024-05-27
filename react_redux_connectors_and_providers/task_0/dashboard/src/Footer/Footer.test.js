@@ -1,82 +1,38 @@
-import { shallow, mount } from '../../config/setupTests';
-import { StyleSheetTestUtils } from 'aphrodite';
-import AppContext from '../App/AppContext';
-import React from 'react';
-import Footer from './Footer';
+import { shallow, mount } from "enzyme";
+import React from "react";
+import Footer from "./Footer";
+import AppContext from "../App/AppContext";
+import { user, logOut } from "../App/AppContext";
 
+describe("<Footer />", () => {
+  it("Footer renders without crashing", () => {
+    const wrapper = shallow(<Footer />);
+    expect(wrapper.exists()).toEqual(true);
+  });
+  it("Verify that the components at the very least render the text “Copyright”", () => {
+    const wrapper = mount(<Footer />);
+    expect(wrapper.find("div.footer p")).toHaveLength(1);
+    expect(wrapper.find("div.footer p").text()).toContain("Copyright");
+  });
 
-describe('<Footer /> standard render tests', () => {
-	beforeEach(() => {
-		StyleSheetTestUtils.suppressStyleInjection();
-	});
+  it("verify that the link is not displayed when the user is logged out within the context", () => {
+    const wrapper = mount(
+      <AppContext.Provider value={{ user, logOut }}>
+        <Footer />
+      </AppContext.Provider>
+    );
+    expect(wrapper.find("div.footer a")).toHaveLength(0);
+  });
 
-	afterEach(() => {
-		jest.clearAllMocks();
-	});
-
-	it('Tests that Footer renders without crashing', () => {
-		const wrapper = shallow(<Footer />);
-		wrapper.update();
-		expect(wrapper.exists()).toBe(true);
-	})
-
-	it('Contains the text "Copyright"', () => {
-		const wrapper = shallow(<Footer />);
-		wrapper.update();
-		expect(wrapper.text()).toContain('Copyright');
-	})
+  it("verify that the link is displayed when the user is logged in within the context", () => {
+    const wrapper = mount(
+      <AppContext.Provider
+        value={{ user: { ...user, isLoggedIn: true }, logOut }}
+      >
+        <Footer />
+      </AppContext.Provider>
+    );
+    expect(wrapper.find("div.footer a")).toHaveLength(1);
+    expect(wrapper.find("div.footer a").text()).toEqual("Contact us");
+  });
 });
-
-describe('<Footer /> context/state tests', () => {
-	beforeEach(() => {
-		StyleSheetTestUtils.suppressStyleInjection();
-	});
-
-	afterEach(() => {
-		jest.clearAllMocks();
-	});
-
-	it('Tests that there is no link rendered when user is logged out within context', () => {
-		const context = {
-			user: {
-				email: '',
-				password: '',
-				isLoggedIn: false
-			}
-		}
-
-		const wrapper = mount(
-			<AppContext.Provider value={context}>
-				<Footer />
-			</AppContext.Provider>
-		)
-
-		expect(wrapper.find('a').length).toBe(0);
-		expect(wrapper.find('a').exists()).toBe(false);
-		expect(wrapper.text()).not.toContain('Contact us');
-
-		wrapper.unmount();
-	})
-
-	it('Tests that there IS a link rendered when user IS logged in within context', () => {
-		const context = {
-			user: {
-				email: '',
-				password: '',
-				isLoggedIn: true
-			}
-		}
-
-		const wrapper = mount(
-			<AppContext.Provider value={context}>
-				<Footer />
-			</AppContext.Provider>
-		)
-
-		expect(wrapper.find('a').length).toBe(1);
-		expect(wrapper.find('a').exists()).toBe(true);
-		expect(wrapper.text()).toContain('Contact us');
-
-		wrapper.unmount();
-	})
-})

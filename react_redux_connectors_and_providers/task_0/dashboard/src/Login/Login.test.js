@@ -1,43 +1,57 @@
-import { shallow, mount, unmount } from '../../config/setupTests';
-import { StyleSheetTestUtils } from 'aphrodite';
-import WithLoggingHOC from '../HOC/WithLogging';
-import Login from './Login';
+import { shallow } from "enzyme";
+import React from "react";
+import Login from "./Login";
+import { StyleSheetTestUtils } from "aphrodite";
 
+describe("<Login />", () => {
+  beforeAll(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+  afterAll(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
 
-describe('<Login />', () => {
-	beforeEach(() => {
-		StyleSheetTestUtils.suppressStyleInjection();
-	});
+  it("Login renders without crashing", () => {
+    const wrapper = shallow(<Login />);
+    expect(wrapper.exists()).toEqual(true);
+  });
+  it("Verify that the components render 3 input", () => {
+    const wrapper = shallow(<Login />);
+    wrapper.update();
+    expect(wrapper.find("div input")).toHaveLength(3);
+  });
+  it("Verify that the components render 2 label", () => {
+    const wrapper = shallow(<Login />);
+    wrapper.update();
+    expect(wrapper.find("div label")).toHaveLength(2);
+  });
 
-	afterEach(() => {
-		jest.clearAllMocks();
-	});
-	
-	it('Tests that Login renders without crashing', () => {
-		const wrapper = shallow(<Login />);
-		wrapper.update();
-		expect(wrapper.exists()).toBe(true);
-	})
+  it("Verify that the components render 2 label", () => {
+    const wrapper = shallow(<Login />);
+    const submitInput = wrapper.find("form input[type='submit']");
 
-	it('Tests that the component renders 3 <input> and 2 <label> tags', () => {
-		const Example = WithLoggingHOC(() => <Login />);
-		const wrapper = mount(<Example />);
-		expect(wrapper.find('input').length).toBe(3);
-		expect(wrapper.find('label').length).toBe(2);
-		wrapper.unmount();
-	})
+    expect(submitInput).toHaveLength(1);
+    expect(submitInput.prop("disabled")).toEqual(true);
+  });
 
-	it(`Tests that submit button is disabled by default`, () => {
-		const wrapper = mount(<Login />);
-		expect(wrapper.find('#submit').prop('disabled')).toBe(true);
-		wrapper.unmount();
-	})
+  it("Verify that the components render 2 label", () => {
+    const wrapper = shallow(<Login />);
+    const emailInput = wrapper.find("#email");
+    const passwordInput = wrapper.find("#password");
 
-	it(`Tests that submit button is enabled when email and password are both filled`, () => {
-		const wrapper = mount(<Login />);
-		wrapper.find('#email').simulate('change', { target: { value: 'adam' } });
-		wrapper.find('#password').simulate('change', { target: { value: '123' } });
-		expect(wrapper.find('#submit').prop('disabled')).toBe(false);
-		wrapper.unmount();
-	})
+    emailInput.simulate("change", {
+      target: { name: "email", value: "Larry@email.com" },
+    });
+
+    let submitInput = wrapper.find("form input[type='submit']");
+
+    expect(submitInput.prop("disabled")).toEqual(true);
+
+    passwordInput.simulate("change", {
+      target: { name: "password", value: "123456789" },
+    });
+
+    submitInput = wrapper.find("form input[type='submit']");
+    expect(submitInput.prop("disabled")).toEqual(false);
+  });
 });

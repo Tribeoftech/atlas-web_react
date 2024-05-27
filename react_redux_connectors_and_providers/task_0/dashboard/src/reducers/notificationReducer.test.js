@@ -1,90 +1,207 @@
-import notificationReducer from "./notificationReducer"
+import { Map, fromJS } from "immutable";
+
+import notificationReducer, {
+  initialNotificationState,
+} from "./notificationReducer";
+
 import {
   FETCH_NOTIFICATIONS_SUCCESS,
   MARK_AS_READ,
   SET_TYPE_FILTER,
-} from '../actions/notificationActionTypes';
-import { Map, fromJS } from 'immutable';
-import notificationsNormalizer from '../schema/notifications';
+} from "../actions/notificationActionTypes";
 
+import notificationsNormalizer from "../schema/notifications";
 
-describe("notificationReducer", () => {
-  it(`Tests that notificationReducer's default state returns an empty array in 'notifications' attribute`, () => {
-    // now returns immutable Map
-    expect(notificationReducer(undefined, {})).toEqual(Map({
-      notifications: [],
-      filter: ""
-    }));
-  })
+describe("courseReducer tests", function () {
+  it("Tests that the default state returns an initial state", function () {
+    const state = notificationReducer(undefined, {});
 
-  it(`Tests that 'FETCH_NOTIFICATIONS_SUCCESS' returns correct data`, () => {
+    expect(state).toEqual(Map(initialNotificationState));
+  });
+  it("Tests that FETCH_NOTIFICATIONS_SUCCESS returns the data passed", function () {
     const action = {
       type: FETCH_NOTIFICATIONS_SUCCESS,
       data: [
-        { id: 1, type: "default", value: "New course available" },
-        { id: 2, type: "urgent", value: "New resume available" },
-        { id: 3, type: "urgent", html: { __html: 'HTML' } },
-      ]
+        {
+          id: 1,
+          type: "default",
+          value: "New course available",
+        },
+        {
+          id: 2,
+          type: "urgent",
+          value: "New resume available",
+        },
+        {
+          id: 3,
+          type: "urgent",
+          value: "New data available",
+        },
+      ],
     };
 
-    const normalizedData = notificationsNormalizer(action.data);
+    const data = [
+      {
+        id: 1,
+        type: "default",
+        value: "New course available",
+      },
+      {
+        id: 2,
+        type: "urgent",
+        value: "New resume available",
+      },
+      {
+        id: 3,
+        type: "urgent",
+        value: "New data available",
+      },
+    ];
 
-    Object.keys(normalizedData.notifications).forEach(key => {
-      normalizedData.notifications[key].isRead = false;
-    });
+    const normalizedData = notificationsNormalizer(data);
 
-    normalizedData.filter = "";
+    const expectedData = {
+      filter: "DEFAULT",
+      ...normalizedData,
+    };
+    expectedData.notifications[1].isRead = false;
+    expectedData.notifications[2].isRead = false;
+    expectedData.notifications[3].isRead = false;
 
-    expect(notificationReducer(undefined, action)).toEqual(Map(normalizedData));
-  })
+    const state = notificationReducer(undefined, action);
 
-  it(`Tests that 'MARK_AS_READ' returns correct data`, () => {
+    expect(state.toJS()).toEqual(expectedData);
+  });
+  it("Tests that MARK_AS_READ returns the data with the right item updated", function () {
+    const initialState = {
+      filter: "DEFAULT",
+      notifications: [
+        {
+          id: 1,
+          isRead: false,
+          type: "default",
+          value: "New course available",
+        },
+        {
+          id: 2,
+          isRead: false,
+          type: "urgent",
+          value: "New resume available",
+        },
+        {
+          id: 3,
+          isRead: false,
+          type: "urgent",
+          value: "New data available",
+        },
+      ],
+    };
+
+    initialState.notifications = notificationsNormalizer(
+      initialState.notifications
+    ).notifications;
+
     const action = {
       type: MARK_AS_READ,
-      notificationId: 1
+      index: 2,
     };
 
-    const state = Map({
-      notifications: [
-        { id: 1, type: "default", value: "New course available", isRead: false },
-        { id: 2, type: "urgent", value: "New resume available", isRead: false },
-        { id: 3, type: "urgent", html: { __html: 'HTML' }, isRead: false },
-      ],
-      filter: ""
-    });
+    const data = [
+      {
+        id: 1,
+        type: "default",
+        value: "New course available",
+      },
+      {
+        id: 2,
+        type: "urgent",
+        value: "New resume available",
+      },
+      {
+        id: 3,
+        type: "urgent",
+        value: "New data available",
+      },
+    ];
 
-    expect(notificationReducer(state, action)).toEqual(Map({
-      notifications: [
-        { id: 1, type: "default", value: "New course available", isRead: true },
-        { id: 2, type: "urgent", value: "New resume available", isRead: false },
-        { id: 3, type: "urgent", html: { __html: 'HTML' }, isRead: false },
-      ],
-      filter: ""
-    }));
-  })
+    const normalizedData = notificationsNormalizer(data);
 
-  it(`Tests that 'SET_TYPE_FILTER' returns correct data`, () => {
+    const expectedData = {
+      filter: "DEFAULT",
+      ...normalizedData,
+    };
+    expectedData.notifications[1].isRead = false;
+    expectedData.notifications[2].isRead = true;
+    expectedData.notifications[3].isRead = false;
+
+    const state = notificationReducer(fromJS(initialState), action);
+
+    expect(state.toJS()).toEqual(expectedData);
+  });
+  it("Tests that SET_TYPE_FILTER returns the data with the right item updated", function () {
+    const initialState = {
+      filter: "DEFAULT",
+      notifications: [
+        {
+          id: 1,
+          isRead: false,
+          type: "default",
+          value: "New course available",
+        },
+        {
+          id: 2,
+          isRead: false,
+          type: "urgent",
+          value: "New resume available",
+        },
+        {
+          id: 3,
+          isRead: false,
+          type: "urgent",
+          value: "New data available",
+        },
+      ],
+    };
+
+    initialState.notifications = notificationsNormalizer(
+      initialState.notifications
+    ).notifications;
+
     const action = {
       type: SET_TYPE_FILTER,
-      filter: "URGENT"
+      filter: "URGENT",
     };
 
-    const state = Map({
-      notifications: [
-        { id: 1, type: "default", value: "New course available", isRead: false },
-        { id: 2, type: "urgent", value: "New resume available", isRead: false },
-        { id: 3, type: "urgent", html: { __html: 'HTML' }, isRead: false },
-      ],
-      filter: ""
-    });
+    const data = [
+      {
+        id: 1,
+        isRead: false,
+        type: "default",
+        value: "New course available",
+      },
+      {
+        id: 2,
+        type: "urgent",
+        isRead: false,
+        value: "New resume available",
+      },
+      {
+        id: 3,
+        type: "urgent",
+        isRead: false,
+        value: "New data available",
+      },
+    ];
 
-    expect(notificationReducer(state, action)).toEqual(Map({
-      notifications: [
-        { id: 1, type: "default", value: "New course available", isRead: false },
-        { id: 2, type: "urgent", value: "New resume available", isRead: false },
-        { id: 3, type: "urgent", html: { __html: 'HTML' }, isRead: false },
-      ],
-      filter: "URGENT"
-    }));
-  })
-})
+    const normalizedData = notificationsNormalizer(data);
+
+    const expectedData = {
+      filter: "URGENT",
+      ...normalizedData,
+    };
+
+    const state = notificationReducer(fromJS(initialState), action);
+
+    expect(state.toJS()).toEqual(expectedData);
+  });
+});
