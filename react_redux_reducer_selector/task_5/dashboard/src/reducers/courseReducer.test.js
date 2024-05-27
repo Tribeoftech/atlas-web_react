@@ -30,7 +30,7 @@ describe("courseReducer", () => {
     },
   ];
 
-  it(`Tests that courseReducer's default state returns an empty array`, () => {
+  it(`Tests that courseReducer's default state returns an empty MAP`, () => {
     // now returns immutable Map
     expect(courseReducer(undefined, {})).toEqual(Map({}));
   });
