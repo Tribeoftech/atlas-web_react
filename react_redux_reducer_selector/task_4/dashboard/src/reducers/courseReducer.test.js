@@ -1,64 +1,154 @@
 import courseReducer from "./courseReducer";
 import {
+  FETCH_COURSE_SUCCESS,
   SELECT_COURSE,
   UNSELECT_COURSE,
 } from '../actions/courseActionTypes';
-import {
-  fetchCourseSuccess,
-} from '../actions/courseActionCreators';
+import coursesNormalizer from '../schema/courses';
+import { Map, fromJS } from 'immutable';
+
 
 describe("courseReducer", () => {
+  let initData = [
+    {
+      id: 1,
+      name: "ES6",
+      credit: 60,
+      isSelected: false,
+    },
+    {
+      id: 2,
+      name: "Webpack",
+      credit: 20,
+      isSelected: false,
+    },
+    {
+      id: 3,
+      name: "React",
+      credit: 40,
+      isSelected: false,
+    },
+  ];
+
   it(`Tests that courseReducer's default state returns an empty array`, () => {
-    const expected = courseReducer(undefined, {});
-    expect(expected).toEqual([]);
-    expect(expected).toBeInstanceOf(Array);
-    expect(expected).toHaveLength(0);
+    // now returns immutable Map
+    expect(courseReducer(undefined, {})).toEqual(Map({}));
   });
 
   it(`Tests that 'FETCH_COURSE_SUCCESS' returns correct data`, () => {
-    const expected = courseReducer(undefined, fetchCourseSuccess());
+    const action = { 
+      type: FETCH_COURSE_SUCCESS,
+      data: [
+        {
+          id: 1,
+          name: "ES6",
+          credit: 60,
+        },
+        {
+          id: 2,
+          name: "Webpack",
+          credit: 20,
+        },
+        {
+          id: 3,
+          name: "React",
+          credit: 40,
+        },
+      ],
+    };
 
-    expect(expected).toEqual([
-      { id: 1, name: "ES6", credit: 60, isSelected: false },
-      { id: 2, name: "Webpack", credit: 20, isSelected: false },
-      { id: 3, name: "React", credit: 40, isSelected: false }
-    ]);
+    const expected = [
+      {
+        id: 1,
+        name: "ES6",
+        isSelected: false,
+        credit: 60,
+      },
+      {
+        id: 2,
+        name: "Webpack",
+        isSelected: false,
+        credit: 20,
+      },
+      {
+        id: 3,
+        name: "React",
+        isSelected: false,
+        credit: 40,
+      },
+    ];
 
-    expect(expected).toBeInstanceOf(Array);
-    expect(expected).toHaveLength(3);
+    const state = courseReducer(undefined, action);
+    expect(state.toJS()).toEqual(coursesNormalizer(expected));
   });
 
   it(`Tests that 'SELECT_COURSE' returns correct data`, () => {
-    const expected = courseReducer([
-      { id: 1, name: "ES6", credit: 60, isSelected: false },
-      { id: 2, name: "Webpack", credit: 20, isSelected: false },
-      { id: 3, name: "React", credit: 40, isSelected: false }
-    ], ({ type: SELECT_COURSE, courseId: 1 }));
+    const action = {
+      type: SELECT_COURSE,
+      courseId: 1,
+    };
 
-    expect(expected).toEqual([
-      { id: 1, name: "ES6", credit: 60, isSelected: true },
-      { id: 2, name: "Webpack", credit: 20, isSelected: false },
-      { id: 3, name: "React", credit: 40, isSelected: false }
-    ]);
-    
-    expect(expected).toBeInstanceOf(Array);
-    expect(expected).toHaveLength(3);
+    const expected = [
+      {
+        id: 1,
+        name: "ES6",
+        isSelected: true,
+        credit: 60,
+      },
+      {
+        id: 2,
+        name: "Webpack",
+        isSelected: false,
+        credit: 20,
+      },
+      {
+        id: 3,
+        name: "React",
+        isSelected: false,
+        credit: 40,
+      },
+    ];
+
+    const state = courseReducer(
+      fromJS(coursesNormalizer(initData)),
+      action
+    );
+
+    expect(state.toJS()).toEqual(coursesNormalizer(expected));
   });
 
   it(`Tests that 'UNSELECT_COURSE' returns correct data`, () => {
-    const expected = courseReducer([
-      { id: 1, name: "ES6", credit: 60, isSelected: true },
-      { id: 2, name: "Webpack", credit: 20,isSelected: false },
-      { id: 3, name: "React", credit: 40, isSelected: false }
-    ], ({ type: UNSELECT_COURSE, courseId: 1 }));
+    const action = {
+      type: UNSELECT_COURSE,
+      courseId: 1,
+    };
 
-    expect(expected).toEqual([
-      { id: 1, name: "ES6", credit: 60, isSelected: false },
-      { id: 2, name: "Webpack", credit: 20, isSelected: false },
-      { id: 3, name: "React", credit: 40, isSelected: false }
-    ]);
+    const expected = [
+      {
+        id: 1,
+        name: "ES6",
+        isSelected: false,
+        credit: 60,
+      },
+      {
+        id: 2,
+        name: "Webpack",
+        isSelected: false,
+        credit: 20,
+      },
+      {
+        id: 3,
+        name: "React",
+        isSelected: false,
+        credit: 40,
+      },
+    ];
 
-    expect(expected).toBeInstanceOf(Array);
-    expect(expected).toHaveLength(3);
+    const state = courseReducer(
+      fromJS(coursesNormalizer(initData)),
+      action
+    );
+
+    expect(state.toJS()).toEqual(coursesNormalizer(expected));
   });
 });
