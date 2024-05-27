@@ -9,12 +9,6 @@ import notificationsNormalizer from '../schema/notifications';
 
 
 describe("notificationReducer", () => {
-  let initData = [
-    { id: 1, type: "default", value: "New course available", isRead: false },
-    { id: 2, type: "urgent", value: "New resume available", isRead: false },
-    { id: 3, type: "urgent", html: { __html: 'HTML' }, isRead: false },
-  ];
-
   it(`Tests that notificationReducer's default state returns an empty array in 'notifications' attribute`, () => {
     // now returns immutable Map
     expect(notificationReducer(undefined, {})).toEqual(Map({
