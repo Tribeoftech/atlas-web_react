@@ -5,7 +5,7 @@ import { getLatestNotification } from "../utils/utils";
 import { StyleSheetTestUtils } from "aphrodite";
 import notificationsNormalizer from "../schema/notifications";
 import { Map, fromJS } from "immutable";
-import { getUnreadNotifications } from "../selectors/notificationSelector";
+import { getUnreadNotificationsByType } from "../selectors/notificationSelector";
 
 const NOTIFICATIONS = [
   {
@@ -141,7 +141,7 @@ describe("<Notifications />", () => {
     });
 
     it("Notifications renders Notification Items and items have correct html", () => {
-      const messages = getUnreadNotifications(listNotifications);
+      const messages = getUnreadNotificationsByType(listNotifications);
 
       const wrapper = mount(
         <Notifications displayDrawer listNotifications={messages} />
@@ -327,6 +327,27 @@ describe("<Notifications />", () => {
       );
 
       expect(fetchNotifications).toHaveBeenCalled();
+
+      jest.restoreAllMocks();
+    });
+
+    it("verify that clicking on the menu item calls handleDisplayDrawer", () => {
+      const setNotificationFilter = jest.fn();
+
+      const wrapper = shallow(
+        <Notifications
+          setNotificationFilter={setNotificationFilter}
+          displayDrawer={true}
+        />
+      );
+
+      wrapper.find("#buttonFilterUrgent").simulate("click");
+
+      expect(setNotificationFilter).toHaveBeenNthCalledWith(1, "URGENT");
+
+      wrapper.find("#buttonFilterDefault").simulate("click");
+
+      expect(setNotificationFilter).toHaveBeenNthCalledWith(2, "DEFAULT");
 
       jest.restoreAllMocks();
     });
