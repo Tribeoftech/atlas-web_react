@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Notifications from "../Notifications/Notifications";
+import NotificationsContainer from "../Notifications/NotificationsContainer";
 import Header from "../Header/Header";
 import BodySection from "../BodySection/BodySection";
 import BodySectionWithMarginBottom from "../BodySection/BodySectionWithMarginBottom";
@@ -71,7 +71,7 @@ export class App extends Component {
 
     return (
       <>
-        <Notifications
+        <NotificationsContainer
           displayDrawer={displayDrawer}
           handleDisplayDrawer={displayNotificationDrawer}
           handleHideDrawer={hideNotificationDrawer}
