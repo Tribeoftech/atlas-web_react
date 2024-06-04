@@ -22,6 +22,8 @@ import thunk from "redux-thunk";
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
+import "node-fetch";
+
 describe("action creators tests", function () {
   it("returns correct action for login", function () {
     const user = { email: "larry@gmail.com", password: 123456789 };

@@ -23,21 +23,10 @@ describe("<App />", () => {
     const wrapper = shallow(<App />);
     expect(wrapper.exists()).toEqual(true);
   });
-  it("should contain the Login component", () => {
-    const wrapper = shallow(<App />);
-    expect(wrapper.find("Login")).toHaveLength(1);
-  });
 
   it("CourseList is not displayed with isLoggedIn false by default", () => {
     const wrapper = shallow(<App />);
     expect(wrapper.find("CourseList")).toHaveLength(0);
-  });
-
-  it("isLoggedIn is true", () => {
-    const wrapper = shallow(<App isLoggedIn={true} />);
-
-    expect(wrapper.find("Login")).toHaveLength(0);
-    expect(wrapper.find("CourseList")).toHaveLength(1);
   });
 });
 

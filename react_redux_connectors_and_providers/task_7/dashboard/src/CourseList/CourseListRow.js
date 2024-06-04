@@ -5,11 +5,16 @@ import { StyleSheet, css } from "aphrodite";
 const rowStyles = { backgroundColor: "#f5f5f5ab" };
 const headerRowStyles = { backgroundColor: "#deb5b545" };
 
-function CourseListRow({ isHeader, textFirstCell, textSecondCell }) {
-  const [isChecked, setIsChecked] = useState(false);
-
+function CourseListRow({
+  id,
+  isHeader,
+  textFirstCell,
+  textSecondCell,
+  isChecked,
+  onChangeRow,
+}) {
   const handleCheckbox = () => {
-    setIsChecked(!isChecked);
+    onChangeRow(id, !isChecked);
   };
 
   let element;
@@ -40,7 +45,10 @@ function CourseListRow({ isHeader, textFirstCell, textSecondCell }) {
     element = (
       <>
         <td className={tableItemStyle}>
-          <input type="checkbox" onClick={handleCheckbox}></input>
+          {textFirstCell !== "No course available yet" && (
+            <input type="checkbox" onClick={handleCheckbox}></input>
+          )}
+
           {textFirstCell}
         </td>
         <td className={tableItemStyle}>{textSecondCell}</td>
@@ -57,14 +65,20 @@ function CourseListRow({ isHeader, textFirstCell, textSecondCell }) {
 }
 
 CourseListRow.defaultProps = {
+  id: null,
   isHeader: false,
   textSecondCell: null,
+  isChecked: false,
+  onChangeRow: () => {},
 };
 
 CourseListRow.propTypes = {
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   isHeader: PropTypes.bool,
   textFirstCell: PropTypes.string.isRequired,
   textSecondCell: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  isChecked: PropTypes.bool,
+  onChangeRow: PropTypes.func,
 };
 
 const cssVars = {
